@@ -1,0 +1,3362 @@
+---
+title: "2023 R workshop"
+editor: source
+author: R4 박재영
+subtitle: "가톨릭대학교 서울성모병원 직업환경의학과"
+execute:
+  eval: false
+  echo: true
+format:
+  revealjs: 
+    theme: moon #moon night  solarized simple
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: images/심볼마크 기본형_CMC Blue.png
+    css: css/logo.css
+    footer: 2023 서울성모병원 직업환경의학과 R 워크샵
+    transition: slide
+    transition-speed: default
+---
+
+# Introduction
+
+-   What is R?
+-   R studio
+-   R : Object
+-   R : Functions
+-   R : Packages
+-   R : Scripts
+
+## 워크샵 시작 전 준비 {.smaller .scollable}
+
+-   [R 설치](https://cran.r-project.org/bin/windows/base/)
+-   [R studio 설치](https://posit.co/download/rstudio-desktop/)
+-   [R 워크샵 자료 다운](https://drive.google.com/drive/folders/1z2l-_h-e7A7Y1SLaVjrBLBvzQvR0y4yy?usp=sharing) 받기
+    -   압축 파일 다운 후 원하는 곳에 풀기(전체 다운로드!)
+    -   슬라이드 : presentation \> Rworkshop_presentation.html
+    -   코드 : scripts \> workshop.R
+    -   교과서(참고용) : \_book \> index.html
+-   **R_workshop.Rproj 더블클릭**
+
+![](images/prerequisite.png)
+
+## 통계 프로그램
+
+-   Excel(?)
+-   SAS
+-   Stata
+-   **R**
+
+## R의 장점 {.smaller}
+
+::: columns
+::: column
+-   무료
+-   Reproducibility
+    -   클릭질 대신 코드를 통해 재현성 확보
+-   (확장성) 빠른 최신 통계 기법 업데이트
+-   커뮤니티
+-   범용성
+    -   통계 이외에 사무 자동화에도 이용 가능
+:::
+
+::: column
+![](images/SASvsR.webp){.r-stretch}
+:::
+:::
+
+## AI가 있는데 배워야하나
+
+::: columns
+::: column
+-   AI가 코드를 다 짜준다?
+    -   거짓말도 잘 하는 친구
+-   단순 작업보다 통계의 개념 및 올바른 해석이 더 중요한 시대
+:::
+
+::: column
+![](images/chatgpt-4-main-810x456.jpg)
+:::
+:::
+
+## R 어렵다던데?
+
+::: columns
+::: column
+-   R Studio가 없던 시절
+    -   (2011.02.28 탄생)
+-   tidyverse가 없던 시절
+    -   (2016.09.15. tidyverse 1.0.0 release)
+-   싸이 강남스타일(2012.07.)
+-   다 옛날 이야기..
+:::
+
+::: column
+![](images/transition_door.png)
+:::
+:::
+
+## R 기본용어
+
+-   **RStudio**
+
+-   **Objects**
+
+-   **Functions**
+
+-   **Packages**
+
+-   **Scripts**
+
+## R 기본용어 - R Studio {.smaller}
+
+::: columns
+::: column
+-   **RStudio** : 편집기
+
+    -   통합개발환경(IDE)
+    -   R이랑 함께 깔자
+
+-   **Objects**
+
+-   **Functions**
+
+-   **Packages**
+
+-   **Scripts**
+:::
+
+::: column
+![](images/RStudio_overview.png){fig-align="center"}
+:::
+:::
+
+## R 기본용어 - Objects {.smaller}
+
+-   **RStudio** : 편집기
+
+-   **Objects** : 데이터
+
+    -   데이터, 변수, 그래프 등등
+    -   RDS 파일로 저장할 수 있음(파일 확장자가 .RDS)
+
+-   **Functions**
+
+-   **Packages**
+
+-   **Scripts**
+
+## R 기본용어 - Functions {.smaller}
+
+-   **RStudio** : 편집기
+
+-   **Objects** : 데이터
+
+-   **Functions** : 요술항아리
+
+    -   Object를 넣으면, Object가 나옴.
+    -   내부에서 무슨 일이 일어나는지 정확히 몰라도 됨. 입력 + 출력만 알자.
+    -   R에서 배우는 명령어들이 다 Function임.
+
+```{r}
+#| code-line-numbers: 1-4|1,4
+
+check_missing_df <- function(df){
+  df_missing <- data.frame("Variables" = colnames(df), "Number_of_NA" = sapply(df, function(x) sum(is.na(x))) )
+  df_missing
+}
+```
+
+-   **Packages**
+
+-   **Scripts**
+
+## R 기본용어 - Packages {.smaller}
+
+::: columns
+::: column
+-   **RStudio** : 편집기
+
+-   **Objects** : 데이터
+
+-   **Functions** : 요술항아리
+
+-   **Packages** : Function 모음집
+
+    -   R 기능의 핵심.
+    -   원하는 통계 기법, 기능이 이미 패키지로 만들어져 어딘가에 있다.
+
+-   **Scripts**
+:::
+
+::: column
+![](images/tidy_workflow.png)
+:::
+:::
+
+::: footer
+Image from: [here](https://science.uct.ac.za/seec/stats-toolbox-seminars-r-packages-and-r-related-toolboxes/r-tidyverse)
+:::
+
+## R 기본용어 - Scripts {.smaller}
+
+::: columns
+::: column
+-   **RStudio** : 편집기
+
+-   **Objects** : 데이터
+
+-   **Functions** : 요술항아리
+
+-   **Packages** : Function 모음집
+
+-   **Scripts** : 코드
+
+    -   .R 파일
+:::
+
+::: column
+![](images/scritpt_example.png){fig-align="center"}
+:::
+:::
+
+# 실행 및 기본화면
+
+-   R studio : Script pane
+-   R studio : Console pane
+-   R studio : Plots/pakages/help pane
+-   R studio : Environment pane
+
+## R Studio 기본화면
+
+![](images/RStudio_overview.png){fig-align="center"}
+
+## R Studio 기본화면 - Script
+
+-   File -\> New File -\> R Script
+-   [**Ctrl + Shift + N**]{#short_cut .short style="color: yellow;"}
+
+. . .
+
+-   File -\> Open File -\> workshop.R 열기
+-   [**Ctrl + O**]{.short style="color: yellow;"}
+
+## R Studio 기본화면 - Script
+
+-   코드 작성 및 실행([Ctrl + Enter]{.short style="color: yellow;"})하는 곳
+
+    -   패키지 설치 및 불러오기
+
+```{r library}
+#| code-line-numbers: 2|3
+
+# Install & Load
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+## R Studio 기본화면 - Script
+
+-   코드 작성 및 실행([Ctrl + Enter]{.short style="color: yellow;"})하는 곳
+
+    -   패키지 설치 및 불러오기
+
+    -   pacman 쓰기
+
+```{r, eval=TRUE, echo= FALSE, message=FALSE, warning=FALSE}
+#| code-line-numbers: 1-2|3-6
+
+#installs the pacman library if not installed already
+if (!require("pacman")) install.packages("pacman")
+# install if needed and load packages
+pacman::p_load (tidyverse, readxl , devtools , haven , table1 , here , rstudioapi, janitor, palmerpenguins,rio, mice, broom)
+source(here('scripts','functions.R'))
+```
+
+```{r, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
+#| code-line-numbers: 1-2|3-7
+
+#installs the pacman library if not installed already
+if (!require("pacman")) install.packages("pacman")
+# install if needed and load packages
+pacman::p_load (tidyverse, readxl , devtools , haven , table1 ,
+                here , rstudioapi, janitor, palmerpenguins,rio, update=TRUE)
+```
+
+## R 추천 패키지 {.smaller}
+
+::: incremental
+-   pacman : 패키지 관리
+-   tidyverse : 메타 패키지
+    -   dplyr \# data management
+    -   tidyr \# data management
+    -   ggplot2 \# data visualization
+    -   stringr \# work with strings and characters
+    -   forcats \# work with factors
+    -   lubridate \# work with dates
+    -   purrr \# iteration and working with lists
+:::
+
+## R 추천 패키지 {.smaller}
+
+::: incremental
+-   파일 읽기 쓰기
+
+    -   here : R project 폴더에서 상대경로 지정해줌
+    -   rio : csv, xlsx, sas 등등 파일 읽어줌
+
+-   janitor : 테이블 및 데이터 클리닝
+
+-   보고서 작성용
+
+    -   rmarkdown : 리포트 작성
+    -   knitr : R Markdown report generation and html tables
+
+-   Interactive
+
+    -   leaflet : \# interactive map
+    -   plotly : \# interactive graphics
+    -   shiny : \# interactive web apps
+:::
+
+## R Studio 기본화면 - Console
+
+-   [**Ctrl + Enter**]{.short style="color: yellow;"}
+    -   코드가 콘솔창으로 이동&실행
+-   콘솔창에 직접 입력해도 됨.
+-   평균 등 간단한 결과는 여기에 바로 표시됨
+-   [**Alt + -**]{.short style="color: yellow;"}
+    -   \<- : Object에 이름을 붙여줌.
+
+```{r}
+#| code-line-numbers: 1-2|3|4
+
+#num_1_to_10 Alt + - 1:10
+num_1_to_10 <- 1:10   # 이름은 뜻이 통하도록 길게 + 대소문자 구별 주의
+num_1_to_10  
+mean(num_1_to_10)
+
+```
+
+## R에서 이름 붙이기 - Valid name vs Clean name {.smaller}
+
+-   대소문자 구별
+-   공백 안됨
+-   길이는 약 250자 제한이 있다(10000 바이트)
+-   (추천) janitor::make_clean_names 를 쓰자.
+
+```{r}
+#| code-line-numbers: 1-2|4-9|11-12|14-15
+
+make.names('number 1 to 10') #Valid name
+janitor::make_clean_names('number 1 to 10') #Clean name
+
+## Read help and run examples
+?janitor::make_clean_names
+x <- structure(1:3, names = c("name with space", "TwoWords", "total $ (2009)"))
+x
+names(x) <- make_clean_names(names(x))
+x
+
+make.names('오늘 워크샵을 주관하는 과는')
+오늘.워크샵을.주관하는.과는 <- '직업환경의학과'
+
+janitor::make_clean_names('오늘 워크샵을 주관하는 과는')
+oneul_wokeusyab_eul_jugwanhaneun_gwaneun <- '직업환경의학과'
+```
+
+## R Studio 기본화면 - 결과 {.smaller .scrollable transition="slide"}
+
+-   그래프, table1 등 표시되는 곳
+
+::: panel-tabset
+### Code
+
+```{r}
+ggplot(mtcars, aes(x=wt, y=mpg)) + 
+  geom_point() +
+  geom_smooth(method=lm, se=FALSE) + 
+  theme_minimal()
+```
+
+### Plot
+
+```{r, echo=FALSE, eval=TRUE}
+#| fig-width: 10
+#| fig-height: 4
+ggplot(mtcars, aes(x=wt, y=mpg)) + 
+  geom_point() +
+  geom_smooth(method=lm, se=FALSE) + 
+  theme_minimal()
+```
+:::
+
+## R Studio 기본화면 - 환경 {.smaller}
+
+::: columns
+::: {.column width="35%"}
+#### mtcars
+
+```{r}
+#| code-line-numbers: 1-2|3
+data("mtcars")
+#R studio 우측 상단에 mtcars가 생김
+?mtcars
+```
+:::
+
+::: {.column width="3%"}
+:::
+
+::: {.column width="62%"}
+```{r}
+#| eval: true 
+#| echo: false
+
+knitr::kable(head(mtcars)[,c("mpg",	"cyl", "disp", "hp", "wt")])
+```
+:::
+:::
+
+## R Studio 기본화면(복습)
+
+![](images/RStudio_overview.png){fig-align="center"} 
+
+## R Studio - layout 변경!
+
+![](images/Change_layout.gif){fig-align="center"} 
+
+
+## 작업 디렉토리
+
+-   현재 작업 중인 디렉토리
+    -   데이터 읽어오는 곳
+    -   결과물 저장하는 곳
+-   Session -\> Set Working directory -\> To source File location
+
+```{r}
+#| code-line-numbers: 1|2-3
+getwd()
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # set working directory to source file location
+# NO! setwd("G:/다른 컴퓨터/의국 컴퓨터/Google 드라이브/coding/asbestos")
+```
+
+-   (추천) R project를 쓰자
+
+## 작업 디렉토리(실습)
+
+::: columns
+::: column
+-   R project 만들기
+
+-   File -\> New project
+
+-   디렉토리를 하나 선택해주면 .Rproj 파일이 생김
+
+-   .Rproj 파일이 있는 곳이 작업디렉토리
+
+-   Tools -\> Project options 조정(우측 그림)
+:::
+
+::: column
+![](images/R_project_option.png)
+:::
+:::
+
+## R project 왜 쓰나? - 코드 위생!
+
+-   R project 좋은 점
+    -   **Portablity** 폴더 단위로 프로젝트 관리
+    -   **Reproducibility** 소스 코드에서 모든 것이 나오도록 관리
+        -   다른 사람이 다른 기계에서 미래에도 돌릴 수 있게
+    -   git 등 버전 관리 툴 이용 가능
+
+::: footer
+Why R project? [참고](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/)
+:::
+
+## 코드 위생을 위한 좋은 습관
+
+-   데이터, 결과는 모두 프로젝트 폴더 아래에 관리.
+
+```{r}
+# 작업디렉토리 밑에 data output scripts plots doc 서브 디렉토리 만들기
+myfolders <- c("data", "output", "scripts","plots","doc")
+lapply (myfolders, dir.create)
+```
+
+-   작업 시작할 때는 R을 새로 시작해줌
+    -   [**Ctrl + Shift + F10**]{.short style="color: yellow;"} : R 새로 시작 단축키
+-   Script에 코멘트 잘 달기
+-   [스타일 가이드](https://style.tidyverse.org/) 에 따른 코드 작성
+
+# Data Management
+
+-   Introduction
+-   Tidy data?
+-   데이터 위생
+
+## Data Management
+
+::: columns
+::: column
+-   **Data 읽고 쓰기**
+-   Data 클리닝
+:::
+
+::: column
+![](images/Import_Export_1500x500.png)
+:::
+:::
+
+## Data Management
+
+::: columns
+::: column
+-   Data 읽고 쓰기
+-   **Data 클리닝**
+    -   변수명 정리 및 변경
+    -   중복 제거
+    -   변수명 추가 생성 및 변형
+    -   행 추출 혹은 추가
+:::
+
+::: column
+![](images/data_cleaning.png)
+:::
+:::
+
+## 깔끔한 데이터(tidy data)
+
+-   Each variable is a column; each column is a variable.
+-   Each observation is a row; each row is an observation.
+-   Each value is a cell; each cell is a single value.
+
+![](images/tidy-1.png)
+
+::: footer
+Read more [here](https://r4ds.hadley.nz/data-tidy.html)
+:::
+
+## 깔끔한 데이터(tidy data)
+
+-   열 = 변수
+-   행 = 관찰(observation)
+    -   대개는 사람이지만 아닐 수 있다
+-   셀 = value
+
+![](images/tidy-1.png)
+
+::: footer
+Read more [here](https://r4ds.hadley.nz/data-tidy.html)
+:::
+
+## 깔끔한 데이터(tidy data) - 예시 {.smaller}
+
+-   열 = 변수
+-   행 = 관찰(observation)
+    -   대개는 사람이지만 아닐 수 있다
+-   셀 = value
+
+```{r, eval=TRUE, echo=FALSE}
+
+tidy_tb_example <- data.frame(
+  country = c(rep('Afghanistan',2),rep('Brazil',2),rep('China',2)),
+  year = c(rep(c(1999,2000),3)),
+  cases = c(745,2666,37737,80488,212258,213766),
+  population = c(19987071, 20595360,172006362,174504898,1272915272, 1280428583)
+)
+knitr::kable(tidy_tb_example)
+```
+
+::: footer
+Read more [here](https://r4ds.hadley.nz/data-tidy.html)
+:::
+
+## 깔끔한 데이터(tidy data) - 아닌 것 예시 {.smaller .scrollable}
+
+-   **열 = 변수** FAIL
+-   행 = 관찰(observation)
+-   셀 = value
+
+```{r, eval=TRUE, echo=FALSE}
+tidy_tb_example %>% pivot_wider(names_from = 'year', values_from = c('cases','population')) %>% knitr::kable()
+```
+
+::: footer
+Read more [here](https://r4ds.hadley.nz/data-tidy.html)
+:::
+
+## 깔끔한 데이터(tidy data) - 아닌 것 예시 {.smaller .scrollable}
+
+-   열 = 변수
+-   **행 = 관찰(observation)** FAIL
+-   셀 = value
+
+```{r, eval=TRUE, echo=FALSE}
+tidy_tb_example %>% pivot_longer(cols = 3:4, names_to = 'type', values_to = 'count') %>%
+   knitr::kable()
+```
+
+::: footer
+Read more [here](https://r4ds.hadley.nz/data-tidy.html)
+:::
+
+## 깔끔한 데이터(tidy data) - 아닌 것 예시 {.smaller}
+
+-   열 = 변수
+-   행 = 관찰(observation)
+-   **셀 = value** FAIL
+
+```{r, eval=TRUE, echo=FALSE}
+tidy_tb_example %>% mutate(rate =paste0(cases,"/",population)) %>%
+  select(country, year, rate) %>% knitr::kable()
+```
+
+::: footer
+Read more [here](https://r4ds.hadley.nz/data-tidy.html)
+:::
+
+## 데이터 위생을 위한 좋은 습관
+
+::: columns
+::: column
+-   엑셀을 쓰지 않는다
+    -   merged cell
+    -   셀 서식 문제
+    -   너무 자유로운 형식
+-   엑셀을 포기할 수 없다면..
+    -   사람이 쉽게 읽을 수 있는 자료 vs 컴퓨터가 쉽게 처리할 수 있는 자료
+:::
+
+::: column
+![](images/excel_disaster.png)
+:::
+:::
+
+# DATA 생성 및 저장
+
+-   Create Data
+-   Save & Load Data
+
+## DATA 생성 및 저장
+
+-   수동으로 만드는 방법 - row
+
+```{r, eval=TRUE, message=FALSE}
+#| code-line-numbers: 1-2,8|3|4-7
+
+# create the dataset manually by row 
+kidney_stone_treatment <- tibble::tribble(
+  ~treatment, ~stone_size, ~cases, ~success,
+  "A",        "small",      87,     81,
+  "A",        "large",      263,    192,
+  "B",        "small",      270,    234,
+  "B",        "large",      80,     55
+)
+
+```
+
+::: footer
+Read more [here](https://www.bmj.com/content/309/6967/1480.full)
+:::
+
+## DATA 생성 및 저장
+
+-   수동으로 만드는 방법 - column
+
+```{r, eval=TRUE, message=FALSE}
+#| code-line-numbers: 1-2,7|3,5-6|4
+
+# create the dataset manually  
+kidney_stone_treatment_2 <- data.frame(
+  treatment = c('A','A','B','B'),
+  stone_size = rep(c('small','large'),2),
+  cases = c(87,263,270,80),
+  success = c(81,192,234,55)
+)
+```
+
+-   두 데이터가 동일한 지 확인하기
+
+```{r, eval=FALSE}
+# Check if they are same
+all.equal(kidney_stone_treatment,kidney_stone_treatment_2)
+```
+
+## DATA 생성 및 저장
+
+-   생성한 데이터 kidney_stone_treatment 를 csv 포맷으로 저장
+-   [**Ctrl + Shift + m**]{.short style="color: yellow;"}
+    -   The pipe operator **%\>%**
+    -   읽기 쉬운 코드
+
+```{r}
+#| code-line-numbers: 1-2|4-5
+
+# csv파일 저장하기: pipe를 써보자. Ctrl + Shift + M 
+kidney_stone_treatment %>% write.csv('kidney_stone_treatment.csv')
+
+#같은 효과
+write.csv(kidney_stone_treatment,'kidney_stone_treatment.csv')
+```
+
+## DATA 생성 및 저장
+
+-   잠깐! data는 data 폴더에서 관리하라고 했는데
+-   here 패키지를 쓰자.
+
+```{r}
+#| code-line-numbers: 1-2|4-5
+# here 패키지를 이용해서 data 폴더에 저장
+kidney_stone_treatment %>% write.csv(here('data','kidney_stone_treatment.csv'))
+
+# 참고) 예전 상대경로 버전
+kidney_stone_treatment %>% write.csv('./data/kidney_stone_treatment.csv')
+```
+
+## csv 파일 읽기 {.smaller}
+
+-   csv = comma-separated values
+    -   텍스트 파일인데 comma로 자료를 나눠둔 것
+    -   구조가 간단해서 여기저기서 쓸 수 있는 장점
+    -   한글 사용자에게는 인코딩 문제를 일으킬 수 있음
+-   메모장으로 열어보자.
+    -   우클릭 - 연결프로그램 - 메모장 선택
+    -   "글자"와 숫자
+-   csv 파일 불러오기
+
+```{r}
+#| code-line-numbers: 1-2|4-5
+# Read csv
+kidney_stone_treatment_csv  <- read.csv(here('data','kidney_stone_treatment.csv'))
+
+# view data frame
+kidney_stone_treatment_csv %>% view
+```
+
+::: footer
+[Read more on csv](https://en.wikipedia.org/wiki/Comma-separated_values)
+:::
+
+## RDS 파일 저장 및 읽기
+
+-   RDS 파일: R 전용 포맷
+    -   R object를 1개 저장
+    -   csv 보다 빠르고 효율적
+
+```{r}
+#| code-line-numbers: 1-2|4-5|7-8|10-11
+# data 폴더에 RDS 파일로 저장하기
+kidney_stone_treatment %>% saveRDS(here('data', 'kidney_stone_treatment.RDS'))
+
+# data 폴더에 있는 RDS 파일 읽어오기
+kidney_stone_treatment_RDS <- readRDS(here('data', 'kidney_stone_treatment.RDS'))
+
+# data frame 보기
+kidney_stone_treatment_RDS %>% view
+
+# Are they same?
+all.equal(kidney_stone_treatment,kidney_stone_treatment_RDS)
+```
+
+## 좀더 편한 데이터 읽기 쓰기 {.smaller}
+
+-   다양한 데이터 파일 포맷들
+    -   csv, RDS 외에도
+    -   엑셀 : xlsx, xls
+    -   SAS 파일 : sas7bdat
+-   (추천) rio 로 해결
+    -   A Swiss-Army Knife for Data I/O
+
+```{r}
+#| code-line-numbers: 1-2|4-6|8-10|12-14
+# rio 패키지 설치 후 한번 실행해줘야 함.
+rio::install_formats()
+
+# export
+kidney_stone_treatment %>% export(here('data', 'kidney_stone_treatment.RDS'))
+kidney_stone_treatment %>% export(here('data', 'kidney_stone_treatment.csv'))
+
+#import RDS and comparison
+kidney_stone_treatment_RDS <- import(here('data', 'kidney_stone_treatment.RDS'))
+all.equal(kidney_stone_treatment,kidney_stone_treatment_RDS)
+
+#import csv and comparison
+kidney_stone_treatment_csv_rio <- import(here('data', 'kidney_stone_treatment.csv'))
+all.equal(kidney_stone_treatment,kidney_stone_treatment_csv_rio)
+
+```
+
+::: footer
+Read more on [Top 5 tips for efficient data I/O](https://bookdown.org/csgillespie/efficientR/input-output.html)
+:::
+
+# DATA 살펴보기
+
+-   Data summary
+-   R markdown 맛보기
+
+## 데이터 살펴보기 - 펭귄 {.smaller .scrollable}
+
+-   남극 펭귄의 종, 성별, 부리길이, 부리두께, 날개 길이, 체중 자료
+
+```{r}
+#| code-line-numbers: 1-2|4-8
+library(palmerpenguins)
+data("penguins")
+
+# map
+library(leaflet)
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=-64.05379090101796, lat=-64.77437610750401, popup="The palmer station")
+```
+
+![](images/penguins.png)
+
+## 데이터 살펴보기 - 펭귄 - summary {.smaller}
+
+-   str : 데이터의 크기, 변수형 등을 알려줌.
+-   head : 첫 6행 보기
+-   view : 엑셀처럼 보여줌.
+-   summary : 데이터 요약
+
+```{r}
+#| code-line-numbers: 1-3|4-5|6-8|9-10|11-12
+
+# 데이터 크기, 변수형 등 확인
+penguins %>% str
+str(penguins)
+# 보통 너무 커서 보기가 힘들다
+penguins
+# 첫 6행 보여줌
+penguins %>% head
+head(penguins)
+# 전체 보기 : environment pane에서 클릭해도 같은 효과
+penguins %>% view
+# 데이터 요약
+penguins %>% summary
+```
+
+## 데이터 살펴보기 - 펭귄 - histogram {.smaller}
+
+-   histogram 그리기
+-   R base vs ggplot : ggplot
+
+```{r}
+#| code-line-numbers: 1-4|5-8|9-12
+
+# R base
+penguins$bill_length_mm %>% hist()
+# R ggplot
+penguins %>% ggplot(aes(x=bill_length_mm)) + geom_histogram() + theme_minimal()
+# fill by species
+penguins %>% ggplot(aes(x=bill_length_mm,fill=species)) + geom_histogram() + theme_minimal()
+# facet_grid by species
+penguins %>% ggplot(aes(x=bill_length_mm,fill=species)) + geom_histogram() +  facet_grid(species~.) + theme_minimal()
+# facet_grid by species, island
+penguins %>% ggplot(aes(x=bill_length_mm,fill=species)) + geom_histogram() +  facet_grid(species~island) + theme_minimal()
+# facet_wrap by species, island
+penguins %>% ggplot(aes(x=bill_length_mm,fill=species)) + geom_histogram() + facet_wrap(vars(species,island)) + theme_minimal()
+```
+
+## 데이터 살펴보기 - 펭귄 - esquisse
+
+-   **Don't panic!**
+-   패키지 esquisse를 이용해서 쉽게 ggplot 그래프 그릴 수 있음.
+
+```{r}
+library(esquisse)
+esquisser(penguins)
+```
+
+::: footer
+[More on esquisse](https://cran.r-project.org/web/packages/esquisse/vignettes/get-started.html)
+:::
+
+## 데이터 살펴보기 - 펭귄 - skim {.smaller}
+
+-   skimr 패키지
+-   rmarkdown 문서로 만들면 더 예쁨!
+
+```{r}
+# 전체 요약
+skimr::skim(penguins)
+# species 별로 요약
+skimr::skim(penguins %>% group_by(species))
+```
+
+## R markdown 실습 {.scrollable}
+
+-   File -\> New File -\> R Markdown
+-   R markdown 문서 구성
+    -   YAML Header
+    -   Code chunk : [**Ctrl + Alt + I**]{.short style="color: yellow;"}
+    -   R markdown text
+
+![](images/rmarkdown.png)
+
+::: footer
+[More on rmarkdown](https://blog.zarathu.com/posts/2019-01-03-rmarkdown/)
+:::
+
+## R markdown 실습 {.scrollable}
+
+```{r}
+---
+title: "Untitled"
+author: "Jaeyoung Park"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# r setup code chunk에 넣기
+library(tidyverse)
+library(palmerpenguins)
+
+# Code chunk에 입력하기
+# ```{r penguins}
+# skimr::skim(iris)
+# ```
+#
+# ```{r penguins_species}
+# skimr::skim(penguins %>% group_by(species))
+# ```
+```
+
+::: footer
+[rmarkdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+:::
+
+# DATA 조작
+
+-   Operators
+-   filter, select, arrange, count, mutate, group_by
+
+## 자주 쓰는 연산자(operator) - 복습
+
+-   \<- : "assign operator",
+    -   "save as"
+    -   "..는"
+    -   [Alt + -]{.short style="color: yellow;"}
+-   %\>% : "pipe operator"
+    -   "and then"
+    -   "..를 가지고 뒤에꺼 해"
+    -   [Ctrl + Shift + M]{.short style="color: yellow;"}
+
+## DATA 기본 조작
+
+-   **rename** : 변수명 바꾸기
+-   **filter** : 행선택
+-   **select** : 열선택
+-   **arrange** : 순서 정렬
+-   **count** : 변수별 개수 세기
+-   **mutate** : 새 변수 정의
+-   **group_by** + **summarise** : 그룹별로 요약
+-   **str\_\*** : 텍스트 관련 조작
+
+## rename
+
+```{r}
+#| code-line-numbers: 1-3|5-8|9-10|11-12|13-14
+# 변수명 확인
+penguins %>% names()
+penguins %>% colnames()
+
+## 한글화 - 추천하지 않으나 예시로 바꿔봄.
+penguins %>% 
+  rename('종' = 'species',
+         '섬' = 'island')
+## R base : 원본이 바뀜 주의!
+names(penguins)[names(penguins) == "species"] ="종"
+## janitor 이용 변수명 변경
+penguins <- penguins %>% clean_names()
+## 원래대로 바꿔 줌.
+names(penguins)[names(penguins) == "jong"] ="species"
+```
+
+## filter 1 {.smaller}
+
+-   **==** : 동일한지 테스트
+-   **is.na** : 결측치인지 확인
+-   **!** : Negation operator 참 거짓을 반대로 바꿔줌
+-   **!=** : 동일하지 않은 거
+
+```{r}
+#| code-line-numbers:  1-2|4-7|9-11|13-14|16-17
+
+# 변수명 확인
+penguins %>% names()
+
+# species 중에서 Adelie 펭귄만 선택
+penguins %>% 
+  filter(species == 'Adelie')
+penguins[penguins$species == 'Adelie',] # R base
+
+# sex가 결측치인 것만 선택
+penguins %>% filter(sex %>% is.na)
+penguins %>% filter(is.na(sex))
+
+# sex가 결측치가 아닌 것만 선택
+penguins %>% filter(!is.na(sex))
+
+# species 중에서 Adelie 펭귄이 아닌 것만 선택
+penguins %>% filter(species != 'Adelie')
+```
+
+## filter 2 {.smaller}
+
+-   **\|** : or
+-   **%in%** : in
+-   **&** : and
+
+```{r}
+#| code-line-numbers:  1-4|1,5-6|9-10,11-13|9-10,14-17
+
+# species 중에서 Adelie 펭귄 또는 gentoo 선택
+penguins %>% 
+  filter(species == 'Adelie'|
+           species == 'Gentoo')
+penguins %>% 
+  filter(species %in% c('Adelie','Gentoo'))
+
+
+# species 중에서 Adelie 펭귄 또는 gentoo 선택
+# + island 는 Dream
+penguins %>% 
+  filter( (species %in% c('Adelie','Gentoo')) &
+           island == 'Dream') 
+# filter를 여러 번 해도 됨
+penguins %>% 
+  filter(species %in% c('Adelie','Gentoo')) %>% 
+  filter(island == 'Dream') 
+```
+
+## filter 3 {.smaller}
+
+-   **\<** : \<
+-   **\<=** : less than or equal to
+-   **complete.cases(.)** : 결측치가 없는 거 고르기
+
+```{r}
+#| code-line-numbers:  1-4|6-8|10-12
+
+# species 중에서 Adelie 펭귄 또는 gentoo 선택 + bill_length_mm 39.2 이하
+penguins %>% 
+  filter(species %in% c('Adelie','Gentoo')) %>% 
+  filter(bill_length_mm <= 39.2) # 결측치는 자동 탈락
+
+# bill_length_mm, bill_depth_mm에 결측치가 없는 자료 선택
+penguins %>% 
+  filter(complete.cases(bill_length_mm, bill_depth_mm)) 
+
+# 모든 변수가 결측치가 없는 자료 선택
+penguins %>% 
+  filter(complete.cases(.)) 
+```
+
+## filter 실습 문제
+
+-   **문제** : 어느 변수든 결측치가 하나라도 있는 자료를 선택해서 view
+
+-   자료가 많으면 결측치 없는 자료만 가지고 분석해도 되지만, 추정해서 채워넣어야할 때가 있다.
+
+## select
+
+-   변수를 선택
+-   제거도 가능
+-   숫자를 이용해도 됨.
+
+```{r}
+#| code-line-numbers: 1-3|1,4|6-8|10-11|12-13
+
+# 4개 변수 선택. 순서도 정해주는 것에 유의
+penguins %>% 
+  select(species, island, sex, body_mass_g)
+penguins[,c("species", "island", "sex", "body_mass_g")] # R base 
+
+# sex 변수 제거
+penguins %>% 
+  select(-sex)
+
+# 변수명 확인 
+penguins %>% names()
+# 6번째 변수 제거
+penguins %>% select(1:5, 7,8)
+```
+
+## arrange
+
+-   정렬
+-   **desc** : 내림차순 정렬
+
+```{r}
+#| code-line-numbers: 1-2|3-4|5-7
+
+# body_mass_g 오름차순
+penguins %>% arrange(body_mass_g) 
+# body_mass_g 내림차순
+penguins %>% arrange(desc(body_mass_g))
+# body_mass_g 내림차순 + flipper_length_mm 오름차순
+penguins %>% 
+  arrange(desc(body_mass_g), flipper_length_mm )
+```
+
+## count
+
+-   변수 내용물 종류가 몇개인지 세기
+
+```{r}
+#| code-line-numbers: 1-4|6-7|8
+
+# species 개수 세기 + 정렬
+penguins %>% count(species)
+penguins %>% count(species, sort = TRUE)
+penguins %>% count(species) %>% arrange(desc(n))
+
+# 변수 여러개 조합도 가능
+penguins %>% count(species, island) # long
+table(penguins$species, penguins$island) # wide. R base 유사품
+```
+
+## mutate 1 {.smaller .scrollable}
+
+-   새 변수 정의하기
+
+-   data를 조작한 후 assign하기
+
+```{r}
+#| code-line-numbers: 1-7|8-10|11-12|13-15|16-17
+
+# TB data 정의
+tidy_tb_example <- data.frame(
+  country = c(rep('Afghanistan',2),rep('Brazil',2),rep('China',2)),
+  year = c(rep(c(1999,2000),3)),
+  cases = c(745,2666,37737,80488,212258,213766),
+  population = c(19987071, 20595360,172006362,174504898,1272915272, 1280428583)
+)
+# rate 정의
+tidy_tb_example %>% 
+  mutate(rate = cases / population * 10000)
+# rate 없음 확인
+tidy_tb_example
+# 집어 넣어줘야 됨
+tidy_tb_example <- tidy_tb_example %>% 
+  mutate(rate = cases / population * 10000)
+# R base 
+tidy_tb_example$rate <- tidy_tb_example$cases / tidy_tb_example$population * 10000
+```
+
+## mutate 2
+
+-   새 변수를 정의
+-   반올림할 때 주의하기 : round vs janitor::round_half_up
+
+```{r}
+#| code-line-numbers: 1-3|4-5|6-8
+
+# 반올림을 하고 싶다
+tidy_tb_example %>% 
+  mutate(rate = round(cases / population * 10000,2))
+# 반올림 시 주의
+round(c(11.5,12.5),0)
+# 반올림 시 주의
+tidy_tb_example <- tidy_tb_example %>% 
+  mutate(rate = janitor::round_half_up(cases / population * 10000,2))
+```
+
+## mutate 3
+
+-   조건문 ifelse으로 변수 정의하기 : 엑셀이랑 비슷!
+-   변수를 숫자형으로 바꾸기 : 최첨단 통계 패키지들을 쓰려면 이런 작업이 필요할 때가 있음.
+-   (추천) case_when
+
+```{r}
+#| code-line-numbers: 1-2|3-6|7-10
+# male = 1 female =0으로 새 변수 생성
+penguins %>% mutate(sex_numeric = ifelse(sex == 'male', 1, 0))
+# 정의가 잘 되었는지 확인해보기
+penguins %>% 
+  mutate(sex_numeric = ifelse(sex == 'male', 1, 0)) %>% 
+  count(sex, sex_numeric)
+# case_when으로 같은 작업
+penguins %>% 
+  mutate(sex_numeric = case_when(sex == 'male' ~ 1,
+                                 sex == 'female' ~ 0))
+```
+
+## mutate 4
+
+-   연속형 변수를 이분형 변수로 변환
+-   flipper_length_mm
+
+```{r}
+#| code-line-numbers: 1-3|5-10
+# 데이터 확인 : 둘로 나누고 싶어짐
+penguins$flipper_length_mm %>% hist
+penguins$flipper_length_mm %>% summary 
+
+# 중앙값을 기준으로 long, short 정의
+penguins %>% 
+  mutate(flipper = 
+           case_when(flipper_length_mm < median(flipper_length_mm, na.rm= TRUE) ~ 'short',
+                     flipper_length_mm >= median(flipper_length_mm, na.rm= TRUE) ~ 'long',
+                     TRUE ~ NA))
+```
+
+## group_by & summarize
+
+-   그룹화 & 요약
+    -   그룹화한 변수의 내용물 별로 반복작업을 해주는 거
+-   (습관) group_by 로 할 일 다한 후 ungroup() 해주자.
+
+```{r}
+#| code-line-numbers: 1-3|5-7|5,8-13|5,8,9|5,8,10|5,8,11|5,8,12|5,8,13
+# group_by 만 하면 # Groups:   species [3] 만 생기고 별일 없음.
+penguins %>%   
+  group_by(species)
+
+# 그룹별로 flipper 평균, 최대, 최소 값을 요약
+penguins %>%   
+  group_by(species) %>% 
+  summarise(
+    n_cases  = n(),
+    mean_flipper = mean(flipper_length_mm, na.rm = TRUE),
+    max_flipper  = max(flipper_length_mm, na.rm = TRUE),
+    min_flipper  = min(flipper_length_mm, na.rm = TRUE),
+    n_males  = sum(sex == "male", na.rm = TRUE))
+```
+
+## group_by & mutate
+
+-   그룹화 & 새 변수 정의
+
+```{r}
+#| code-line-numbers: 1-9|10-11|10,12|13-14
+# 중앙값을 기준으로 species 별로 long, short 정의
+penguins_flipper_classified <- 
+  penguins %>% 
+  group_by(species) %>% 
+  mutate(flipper_by_species = 
+           case_when(flipper_length_mm < median(flipper_length_mm, na.rm= TRUE) ~ 'short',
+                     flipper_length_mm >= median(flipper_length_mm, na.rm= TRUE) ~ 'long',
+                     TRUE ~ NA)) %>% 
+  ungroup() #잊지마세요
+# 잘 정의되었는지 확인하기
+penguins_flipper_classified %>% count(species, flipper_by_species)
+penguins %>% filter(species =='Adelie', flipper_length_mm == 190) %>% nrow
+# view에서 찾기 + 정렬 기능 이용해서 확인하기
+penguins_flipper_classified %>% view
+```
+
+## DATA 조작 복습 {.smaller}
+
+```{r}
+#| code-line-numbers: 1-2|1,3-5|1,3-6|8-9|8-10|8-11|8-12
+# A와 B의 합계를 구한다.
+kidney_stone_treatment_total <-  # 새로 만드는 데이터 이름 정해줌
+  kidney_stone_treatment %>%     
+  group_by(treatment) %>%        # 치료법 별로    
+  summarise(cases=sum(cases), success = sum(success)) %>% # cases, success 요약 한다
+  mutate(stone_size ='both')     # stone_size는 both. 원래 자료에 붙이려면 변수 개수를 맞춰준다.
+
+kidney_stone_treatment %>% 
+  bind_rows(kidney_stone_treatment_total) %>% # 합체 
+  mutate(rate = format(round(success/cases*100,1), digits= 1,nsmall=1))%>%  # 성공률을 구해줌 
+  select(treatment, stone_size, rate) %>%  # 변수 선택
+  pivot_wider(names_from = 'treatment', values_from = 'rate') # wide form으로 변경! 나중에 자세히 
+```
+
+```{r}
+#| eval: true 
+#| echo: false
+
+kidney_stone_treatment %>% 
+  bind_rows(kidney_stone_treatment %>%     
+  group_by(treatment) %>%        # 치료법 별로    
+  summarise(cases=sum(cases), success = sum(success)) %>% # cases, success 요약 한다
+  mutate(stone_size ='both')  ) %>% # 합체 
+  mutate(rate = format(round(success/cases*100,1), digits= 1,nsmall=1))%>%  # 성공률을 구해줌  
+  select(treatment, stone_size, rate) %>%  # 변수 선택
+  pivot_wider(names_from = 'treatment', values_from = 'rate') %>%  
+  knitr::kable()
+```
+
+-   A와 B 중 더 효과적인(=성공률이 높은) 치료법은?
+-   Simpson's paradox
+
+::: footer
+Read more on [Simpson's paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
+:::
+
+## 교란변수 ? {.smaller}
+
+::: columns
+::: column
+-   X : 치료법, 노출 등등
+    -   커피 섭취량
+-   Y : outcome, 성공률, 생존률 등등
+    -   췌장암
+-   C : 교란 변수
+    -   C는 Y의 알려진 위험요인
+    -   C는 X와 연관성이 있으나, X의 결과는 아니다.
+    -   흡연
+    -   연령, 성별 등등..
+:::
+
+::: column
+![](images/gordie_confounder.png)
+:::
+:::
+
+## 교란변수 통제
+
+-   연구 설계와 수행 단계
+    -   randomization
+    -   restriction
+    -   matching
+-   분석 단계
+    -   층화 : stratification
+    -   보정 : multivariate analysis
+
+## 숨어있는 변수 조심!
+
+::: columns
+::: column
+```{r, eval = TRUE}
+penguins %>% ggplot(aes(x=bill_length_mm, y=bill_depth_mm)) +
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  theme_minimal()
+```
+:::
+
+::: column
+```{r, eval = TRUE}
+penguins %>% ggplot(aes(x=bill_length_mm, y=bill_depth_mm, color = species)) +
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  theme_minimal()
+```
+:::
+:::
+
+# DATA 고급 조작
+
+-   De-duplication
+-   NA imputation
+-   Join
+-   Pivot
+
+## 중복제거
+
+-   반복되는 행이 있는지 확인
+-   nrow : 행의 개수를 세어서 체크
+
+```{r}
+#| code-line-numbers: 1-2|4-6|8-9
+# 모든 변수에 대해서 중복 체크
+penguins %>% distinct()
+
+# 비교 : 중복 없음 확인
+penguins %>% nrow
+penguins %>% distinct() %>% nrow
+
+# base R
+penguins[!duplicated(penguins),]
+
+```
+
+## 중복제거 : 언제?
+
+-   보통 Id를 unique 하게 만들어서 인구학적 변수를 붙여준다.
+
+```{r}
+#| code-line-numbers: 1-5|7-10|12-15
+# Example df
+my_handmade_df <- data.frame( Id = c('A','A','A','B','B','B','C','C','D','D'),
+                              ALT = c(13,22,27,15,40,NA,23,21,75,23),
+                              AST = c(23,32,23,18,53,23,44,33,80,44),
+                              date = c('2019-01-23','2020-01-10','2021-01-22','2020-03-03','2021-03-15','2022-03-31','2021-10-14','2022-04-30','2021-08-17','2022-08-16'))
+
+# Date 자료형 변환 
+my_handmade_df %>% str
+my_handmade_df$date <- as.Date(my_handmade_df$date)
+my_handmade_df %>% str
+
+# distinct vs R base vs 벡터
+my_handmade_df %>% distinct(Id)
+my_handmade_df[!duplicated(my_handmade_df$Id), ] 
+unique(my_handmade_df$Id)
+```
+
+## 중복제거 : 언제?
+
+-   인구학적 정보 data와 반복측정 자료의 분리
+    -   오류 예방
+-   slice_min : baseline 측정치 추출하기
+
+```{r}
+#| code-line-numbers: 1-3|5-7|8-9|11-13
+# 인구학적 정보 추가
+my_handmade_df_demographic <- my_handmade_df %>% distinct(Id) %>% 
+  mutate(sex = c('M','F','M','F'))
+
+# 인구학적 정보를 분리하지 않았을 때 발생할 수 있는 오류 예
+my_handmade_df_wrong <- my_handmade_df %>% 
+  mutate(sex = c(rep('M',3),rep('F',2),rep('M',3),rep('F',2)))
+# 성별 입력 오류 찾기
+my_handmade_df_wrong %>% group_by(Id) %>% summarise(n = n_distinct(sex))
+
+# 첫번째 측정만 추출
+my_handmade_df_baseline <- 
+  my_handmade_df %>% group_by(Id) %>% slice_min(date)
+```
+
+## 결측치 {.smaller}
+
+-   결측치? **예방**이 최선
+-   결측치 종류
+    -   **MCAR**(missing completely at random)
+        -   연구대상 및 변수값과 무관한 결측(전산 오류 등). 드물다.
+    -   **MAR**(missing at random)
+        -   결측이 되는 정도가 결측된 변수의 값이 아니라 다른 변수와 관련
+    -   **MNAR**(missing not at random)
+        -   결측이 되는 정도가 결측된 변수의 값에 따라 달라짐
+
+::: footer
+[Read more on missing data types](https://www.sciencedirect.com/science/article/pii/S0895435622002189)
+:::
+
+## 결측치 종류 예시 {.smaller}
+
+-   결측치 종류 예시
+    -   서울성모병원에 방문해서 설문지 작성 후 혈압을 측정하는 연구
+    -   MCAR(missing completely at random)
+        -   차가 막혀서 못 왔어요
+    -   MAR(missing at random)
+        -   직장있는 사람들이 못 왔어요.
+    -   MNAR(missing not at random)
+        -   집에서 혈압을 재보고 있는데 혈압이 정상이어서 안 왔어요.
+-   MAR vs MNAR : 구별 어려움.
+
+::: footer
+[Read more on missing data types](https://www.sciencedirect.com/science/article/pii/S0895435622002189)
+:::
+
+## 결측치 처리 방법 {.smaller .scrollable}
+
++----------------------------+---------------------------+-----------------------------------------------------------------+
+| **Missing data mechanism** | **Analysis**              | **Imputation**                                                  |
++============================+===========================+=================================================================+
+| MCAR                       | Complete case analysis    | No imputation necessary                                         |
++----------------------------+---------------------------+-----------------------------------------------------------------+
+| MAR                        | No complete case analysis | Single imputation methods not valid, Multiple imputation needed |
++----------------------------+---------------------------+-----------------------------------------------------------------+
+| MNAR                       | No complete case analysis | All imputation methods not valid                                |
++----------------------------+---------------------------+-----------------------------------------------------------------+
+
+::: footer
+[Read more on missing data](https://www.sciencedirect.com/science/article/pii/S0895435622002189)
+:::
+
+## 결측치 처리 방법
+
+-   결측치 버리고 분석
+
+-   결측치를 대체
+
+    -   평균이나 중앙값, 최빈값 등으로 대체
+        -   분포가 변할 수 있어 주의 필요. 비추
+    -   MICE(Multivariate Imputation by Chained Equation) Imputation
+        -   MAR에는 이 방법을 써보자.
+        -   mice 패키지 이용
+
+::: footer
+1.  [결측치 대체하기](https://stefvanbuuren.name/fimd/) 2. [한글블로그](https://dining-developer.tistory.com/19)
+:::
+
+## 결측치 처리 예시 {.smaller .scrollable}
+
+-   펭귄 데이터로 결측치 대체 실습
+
+```{r eval = TRUE}
+#| code-line-numbers: 1-4|5-6|7-8
+## NA imputation 실습 : 펭귄에 id 추가
+penguins_NA <- penguins %>%
+  mutate(id = 1: nrow(penguins)) %>% 
+  relocate(id)  # id 변수를 맨 앞으로 
+## 결측치 있는 id 추출
+id_with_NA <- penguins_NA %>% filter(!complete.cases(.)) %>% pull(id)
+## 결측치 있는 부분 
+penguins_NA %>% filter(!complete.cases(.))
+```
+
+## 결측치 처리 예시 {.smaller .scrollable}
+
+-   펭귄 데이터로 결측치 대체 실습
+
+```{r eval = TRUE}
+#| code-line-numbers: 1-4|1,6
+# median 으로 대체 
+penguins_NA_imputed1 <- penguins_NA %>% 
+  mutate(bill_length_mm = 
+           replace(bill_length_mm, is.na(bill_length_mm), median(bill_length_mm, na.rm = TRUE))) 
+
+penguins_NA_imputed1 %>% filter( id %in% id_with_NA)
+```
+
+## 결측치 처리 예시 {.smaller .scrollable}
+
+-   펭귄 데이터로 결측치 대체 실습
+
+```{r eval = TRUE}
+#| code-line-numbers: 1-6|1,8
+# 그룹별로 median 으로 대체 
+penguins_NA_imputed2 <- penguins_NA %>% 
+  group_by(species, island) %>% 
+  mutate(bill_length_mm = 
+           replace(bill_length_mm, is.na(bill_length_mm), median(bill_length_mm, na.rm = TRUE))) %>% 
+  ungroup() # 잊지말자 ungroup
+
+penguins_NA_imputed2 %>% filter( id %in% id_with_NA)
+```
+
+## 결측치 처리 예시 {.smaller .scrollable}
+
+-   펭귄 데이터로 결측치 대체 실습
+-   calculate_mode 는 functions.R에 들어 있는 최빈값 찾아주는 함수
+
+```{r eval = TRUE}
+#| code-line-numbers: 1-4|4-7|10
+# 그룹별로 median, mean, mode로 대체 
+penguins_NA_imputed3 <- penguins_NA %>% 
+  group_by(species, island) %>% 
+   mutate(bill_length_mm = replace(bill_length_mm, is.na(bill_length_mm), median(bill_length_mm, na.rm = TRUE)),
+         bill_depth_mm  = replace(bill_depth_mm, is.na(bill_depth_mm), mean(bill_depth_mm, na.rm = TRUE)),
+         flipper_length_mm  = replace(flipper_length_mm , is.na(flipper_length_mm ), calculate_mode(flipper_length_mm)),
+         body_mass_g  = replace(body_mass_g , is.na(body_mass_g ), median(body_mass_g , na.rm = TRUE))) %>% 
+  ungroup() # 잊지말자 ungroup
+
+penguins_NA_imputed3 %>% filter( id %in% id_with_NA)
+```
+
+## 결측치 처리 예시 - mice {.smaller .scrollable}
+
+-   mice 패키지 이용 sex 변수 채우기
+-   다른 변수들을 이용해서 추정해줌
+    -   pmm : predictive mean matching (업계 추천)[^1]
+-   사실은 코드 몇줄 써서 **머신러닝** 한 거!
+
+[^1]: White, I. R., Royston, P., & Wood, A. M. (2011). Multiple imputation using chained equations: issues and guidance for practice. Statistics in medicine, 30(4), 377-399.
+
+```{r }
+#| code-line-numbers: 1-2|4
+penguins_NA_imputed3_mice <- penguins_NA_imputed3 %>% 
+  mutate(sex = complete(mice(penguins_NA_imputed3, method = "pmm"))$sex)
+
+penguins_NA_imputed3_mice %>% filter( id %in% id_with_NA)
+```
+
+## 데이터 결합(join) - 개념
+
+![](images/join_cheat_sheet.png)
+
+::: footer
+Image from [Data-wrangling-cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+:::
+
+## 데이터 결합(join) - 개념
+
+![](images/sql-joins-cheatsheet.webp)
+
+::: footer
+Image from [here](https://www.ml4devs.com/articles/sql-joins-tutorial-inner-join-left-join-right-join-full-join-cross-join/)
+:::
+
+## 데이터 결합(join) - 예시
+
+-   left_join : 내 자료(left)에 추가자료를(right) 붙여줌.
+    -   내 자료의 행은 유지됨. 추가자료는 일부 버려질 수 있음.
+
+```{r}
+#| code-line-numbers: 1-3|1,4-5|7-9|11-14
+
+# 직업 자료 생성
+my_handmade_df_job <- data.frame(Id = LETTERS[1:6],
+                                 job = rep(c('shift','day', NA),2))
+my_handmade_df_job <- my_handmade_df_job %>% filter(complete.cases(.))
+my_handmade_df_job
+
+# left join
+my_handmade_df_demographic_left <-
+  left_join(my_handmade_df_demographic, my_handmade_df_job, by='Id')
+
+# left join : 같은 방법
+my_handmade_df_demographic_left <- 
+  my_handmade_df_demographic %>%
+  left_join(my_handmade_df_job, by='Id')
+```
+
+## 데이터 결합(join) - 예시
+
+-   full_join : 내 자료(left)에 추가자료를(right) 붙여줌.
+    -   내 자료, 추가자료 모두 유지.
+
+```{r}
+#| code-line-numbers: 1-3|5-7|9-11
+# full join
+my_handmade_df_demographic_full <-
+  full_join(my_handmade_df_demographic, my_handmade_df_job, by='Id')
+
+# right join
+my_handmade_df_demographic_right <-
+  right_join(my_handmade_df_demographic, my_handmade_df_job, by='Id')
+
+# inner join
+my_handmade_df_demographic_inner <-
+  inner_join(my_handmade_df_demographic, my_handmade_df_job, by='Id')
+```
+
+## 데이터 결합(join) {.smaller}
+
+-   **결합키가 유일**한지 **NA** 없는지 꼭 확인
+
+```{r}
+my_handmade_df_demographic$Id %>% length
+my_handmade_df_demographic$Id %>% unique %>% length
+```
+
+-   두 data 중 **겹치는 열변수는 없는가** 확인
+
+```{r}
+#| code-line-numbers: 1-3|1,4
+
+# 변수가 겹치는 경우 생기는 불상사
+my_handmade_df_demographic %>% names
+my_handmade_df_demographic_full %>% names
+inner_join(my_handmade_df_demographic,my_handmade_df_demographic_full, by='Id')
+```
+
+-   결합 전후에 nrow 개수 확인
+
+```{r}
+#| code-line-numbers: 2-3|4-5
+# 키만 가지고 개수를 세보자.
+# inner join한 거 nrow랑 같은가
+intersect(my_handmade_df_demographic$Id, my_handmade_df_job$Id) %>% length
+# full join한 거 nrow랑 같은가
+union(my_handmade_df_demographic$Id, my_handmade_df_job$Id) %>% length
+```
+
+## 데이터 피벗(pivot)
+
+-   엑셀 피벗테이블이랑 다름!
+-   Wide-to-long
+-   Long-to-wide
+
+::: footer
+Read more on [pivoting data](https://epirhandbook.com/en/pivoting-data.html)
+:::
+
+## 데이터 피벗(pivot) : pivot_longer
+
+![](images/pivot_longer_new.png)
+
+::: footer
+Read more on [pivoting data](https://epirhandbook.com/en/pivoting-data.html)
+:::
+
+## 데이터 피벗(pivot) : pivot_longer
+
+-   Tidy data를 만들 때 사용
+-   컴퓨터가 long form을 좋아함
+
+```{r eval=TRUE}
+data_wide <- tibble::tribble(
+  ~country,      ~'1999', ~'2000', ~'2001', ~'2002',
+  "Angola",        800,   750,   925,  1020,
+  "India",       20100, 25650, 26800, 27255,
+  "Mongolia",      450,   512,   510,  586,
+)
+
+data_long <- data_wide %>%
+  pivot_longer(
+  cols = 2:5, 
+  names_to = "year",
+  values_to = "cases"
+)  
+```
+
+::: footer
+Read more on [pivoting data](https://epirhandbook.com/en/pivoting-data.html)
+:::
+
+## 데이터 피벗(pivot) : pivot_wider
+
+![](images/pivot_wider_new.png)
+
+::: footer
+Read more on [pivoting data](https://epirhandbook.com/en/pivoting-data.html)
+:::
+
+## 데이터 피벗(pivot) : pivot_wider
+
+-   two way table을 만들고 싶을 때
+-   tidy data가 깨지는 단점.
+-   내 자료는 반복측정 자료인데 공단에서 행 = 사람에 맞춰오라고 할 때..
+
+```{r}
+data_long  %>%
+  pivot_wider(
+  names_from = "year",
+  values_from = "cases"
+)  
+```
+
+::: footer
+Read more on [pivoting data](https://epirhandbook.com/en/pivoting-data.html)
+:::
+
+## wide form으로 two way table 만들기 {.smaller transition="none"}
+
+```{r, eval = TRUE}
+#| code-line-numbers: 1-2|4-5
+
+# import csv 파일
+sample_titanic <- rio::import(here('data','sample_titanic.csv'))
+
+# two way table 만들기 
+sample_titanic %>% group_by(Sex, Class) %>% tally(n) %>% #여기까지는 long form
+  knitr::kable()
+```
+
+## wide form으로 two way table 만들기 {.smaller transition="none"}
+
+```{r, eval = TRUE}
+#| code-line-numbers: 4-6
+
+# import csv 파일
+sample_titanic <- rio::import(here('data','sample_titanic.csv'))
+
+# two way table 만들기 
+sample_titanic %>% group_by(Sex, Class) %>% tally(n) %>% #여기까지는 long form
+  pivot_wider(names_from = Class, values_from = n) %>% 
+  knitr::kable()
+```
+
+## wide form으로 two way table 만들기 {.smaller transition="none"}
+
+```{r, eval = TRUE}
+#| code-line-numbers: 4-7
+
+# import csv 파일
+sample_titanic <- rio::import(here('data','sample_titanic.csv'))
+
+# two way table 만들기 
+sample_titanic %>% group_by(Sex, Class) %>% tally(n) %>% #여기까지는 long form
+  pivot_wider(names_from = Class, values_from = n) %>% 
+  adorn_totals(where = "row") %>%             # add a total row
+  knitr::kable()
+```
+
+## wide form으로 two way table 만들기 {.smaller transition="none"}
+
+```{r, eval = TRUE}
+#| code-line-numbers: 4-8
+
+# import csv 파일
+sample_titanic <- rio::import(here('data','sample_titanic.csv'))
+
+# two way table 만들기 
+sample_titanic %>% group_by(Sex, Class) %>% tally(n) %>% #여기까지는 long form
+  pivot_wider(names_from = Class, values_from = n) %>% 
+  adorn_totals(where = "row") %>%             # add a total row
+  adorn_percentages(denominator = "col") %>%  # convert to proportions
+  knitr::kable()
+```
+
+## wide form으로 two way table 만들기 {.smaller transition="none"}
+
+```{r, eval = TRUE}
+#| code-line-numbers: 4-9
+
+# import csv 파일
+sample_titanic <- rio::import(here('data','sample_titanic.csv'))
+
+# two way table 만들기 
+sample_titanic %>% group_by(Sex, Class) %>% tally(n) %>% #여기까지는 long form
+  pivot_wider(names_from = Class, values_from = n) %>% 
+  adorn_totals(where = "row") %>%             # add a total row
+  adorn_percentages(denominator = "col") %>%  # convert to proportions
+  adorn_pct_formatting() %>%                  # convert to percents
+  knitr::kable()
+```
+
+## wide form으로 two way table 만들기 {.smaller transition="none"}
+
+```{r, eval = TRUE}
+#| code-line-numbers: 4-10
+
+# import csv 파일
+sample_titanic <- rio::import(here('data','sample_titanic.csv'))
+
+# two way table 만들기 
+sample_titanic %>% group_by(Sex, Class) %>% tally(n) %>% #여기까지는 long form
+  pivot_wider(names_from = Class, values_from = n) %>% 
+  adorn_totals(where = "row") %>%             # add a total row
+  adorn_percentages(denominator = "col") %>%  # convert to proportions
+  adorn_pct_formatting() %>%                  # convert to percents
+  adorn_ns(position = "front") %>% 
+  knitr::kable()
+```
+
+# 기술 통계
+
+-   명목형 변수 요약
+-   연속형 변수 요약
+
+## 기술통계?
+
+-   기술 통계 (Descriptive statistics)
+    -   내가 가진 자료의 변수별 요약
+-   vs 추론 통계 (Statistical inference)
+    -   내가 가진 자료를 통해 모집단의 특성을 추론
+
+## 변수 {.smaller}
+
+-   범주형 변수(Categorical variables)
+    -   Nominal
+        -   성별, 진단명
+    -   Ordinal
+        -   5-Point Likert Scale
+-   연속형 변수(Numerical variables)
+    -   Interval
+        -   온도(C), 청력(dB)
+    -   Ratio : 0이 있다!
+        -   나이, 키
+
+## 명목형 변수 요약 {.smaller}
+
+-   빈도, 퍼센트
+    -   skim
+    -   count
+    -   tabyl
+-   그래프
+    -   histogram
+    -   ggplot() + geom_bar
+    -   mosaicplot
+-   변수 1개 vs 2개 vs 그 이상
+    -   ggplot2::facet_grid
+    -   색상 이용
+
+::: footer
+More on [Descriptive tables](https://epirhandbook.com/en/descriptive-tables.html)
+:::
+
+## 명목형 변수 요약 - 변수 1개
+
+-   count, table, tabyl
+
+```{r}
+#| code-line-numbers: 1-3|5-6|4-10
+# count
+penguins %>% 
+  count(species)
+
+# table
+table(penguins$species)
+
+# janitor::tabyl 
+penguins %>% 
+  tabyl(species) %>% 
+  adorn_pct_formatting() %>%  # convert proportions to percents
+  flextable::flextable() %>% 
+  flextable::autofit()  %>% 
+  flextable::save_as_docx(path = here('output',"tabyl.docx")) # save as Word document to filepath
+```
+
+::: footer
+More on [tabyl](https://cran.r-project.org/web/packages/janitor/vignettes/tabyls.html)
+:::
+
+## 명목형 변수 요약 - 변수 1개
+
+```{r eval= TRUE }
+penguins %>% ggplot() +
+    aes(x = species) +
+    geom_bar() +
+    theme_minimal()
+```
+
+## 명목형 변수 요약 - 변수 2개
+
+```{r }
+#| code-line-numbers: 1-7|9-10|9,11-12
+penguins %>% 
+  drop_na() %>%
+  tabyl(species, island) %>% 
+  adorn_totals(where = "row") %>%             # add a total row
+  adorn_percentages(denominator = "col") %>%  # convert to proportions
+  adorn_pct_formatting() %>%                  # convert to percents
+  adorn_ns(position = "front")
+
+# R base & mosaic plot
+table(penguins$species, penguins$island)
+table(penguins$species, penguins$island) %>%
+  mosaicplot() # 빈도에 따른 면적 증가
+```
+
+## 명목형 변수 요약 - 변수 2개 그래프 {.smaller .scrollable}
+
+::: panel-tabset
+### 2변수
+
+```{r eval = TRUE}
+# species, island
+penguins %>% ggplot() +
+    aes(x = species, fill = species) +
+    geom_bar() +
+    theme_classic() + facet_grid(.~island)
+```
+
+### 2변수와 색깔 변수
+
+```{r eval = TRUE}
+# species, island and sex
+penguins %>% drop_na() %>% ggplot() +
+    aes(x = species, fill = sex) +
+    geom_bar(position = 'dodge') +
+    theme_classic() + facet_grid(.~island)
+```
+:::
+
+## 연속형 변수 요약 {.smaller}
+
+-   평균, 분산, 최대, 최소, 사분위수, 백분위수
+    -   skim
+    -   summary
+    -   gtsummary::tbl_summary
+-   그래프
+    -   histogram
+    -   ggplot2::geom_boxplot
+    -   q-q plot
+-   변수 2개 이상
+    -   산점도 ggplot2::geom_point()
+
+## 연속형 변수 요약 - 표
+
+```{r}
+#| code-line-numbers: 1-2|4-7|4-10
+# summary
+penguins$flipper_length_mm %>% summary
+
+# tbl_summary
+penguins %>% gtsummary::tbl_summary()
+penguins %>% gtsummary::tbl_summary(by='species')
+penguins %>% gtsummary::tbl_summary(by='species') %>% add_p()
+
+# summary table + p value
+penguins %>% 
+  select(species, sex, year, island, 
+         bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g) %>% 
+  gtsummary::tbl_summary(by='species') %>% add_p()
+```
+
+::: footer
+[gtsummary cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/gtsummary.pdf)
+:::
+
+## 연속형 변수 요약 - 그래프
+
+-   히스토그램
+
+```{r}
+#| eval: TRUE
+
+penguins %>% 
+  ggplot(aes(x=flipper_length_mm)) + geom_histogram() + theme_minimal()
+```
+
+## 연속형 변수 요약 - 그래프
+
+-   히스토그램
+
+```{r}
+#| eval: TRUE
+
+# fill by species
+penguins %>% 
+  ggplot(aes(x=flipper_length_mm,fill=species)) + geom_histogram() + 
+  theme_minimal()
+```
+
+## 연속형 변수 요약 - 그래프
+
+-   히스토그램
+
+```{r}
+#| eval: TRUE
+
+# facet_grid by species
+penguins %>% 
+  ggplot(aes(x=flipper_length_mm,fill=species)) + geom_histogram() +
+  facet_grid(species~.) + theme_minimal()
+```
+
+## 연속형 변수 요약 - 그래프 {.scrollable .smaller}
+
+-   상자그림 그리기 : geom_boxplot 이용.
+    -   geom_jitter : 점을 흩뿌려 줌.
+
+```{r}
+#| eval: TRUE
+
+penguins %>% 
+  ggplot(aes(x=species, y=flipper_length_mm)) + geom_boxplot() + theme_classic()
+
+penguins %>% 
+  ggplot(aes(x=species, y=flipper_length_mm)) +
+  geom_boxplot() + geom_point() + geom_jitter() + theme_classic()
+```
+
+## 연속형 변수 요약 - 그래프
+
+-   q-q plot : 정규분포인지 눈으로 살펴보는 그림
+    -   직선 위에 점이 많이 있을 수록 정규 분포
+-   shapiro test : 정규성 테스트
+
+```{r}
+#| eval: TRUE
+
+# 전체 qq plot
+ggplot(penguins, aes(sample = flipper_length_mm)) +
+  stat_qq() +
+  stat_qq_line()
+```
+
+## 연속형 변수 요약 - 그래프
+
+-   q-q plot : 정규분포인지 눈으로 살펴보는 그림
+    -   직선 위에 점이 많이 있을 수록 정규 분포
+-   shapiro test : 정규성 테스트
+
+```{r}
+#| eval: TRUE
+
+# 정규성 테스트 : 귀무가설 = 정규분포를 따른다.
+shapiro.test(penguins$flipper_length_mm)
+```
+
+## 연속형 변수 요약 - 그래프
+
+-   q-q plot : 정규분포인지 눈으로 살펴보는 용도
+
+```{r}
+#| eval: TRUE
+
+# species 별로 qq plot
+ggplot(penguins, aes(sample = flipper_length_mm, colour = species)) +
+  stat_qq() +
+  stat_qq_line()
+```
+
+## 연속형 변수 요약 - 그래프
+
+-   q-q plot : 정규분포인지 눈으로 살펴보는 용도
+-   shapiro.test를 통해 정규성 테스트를 해볼 수 있다
+
+```{r}
+#| eval: TRUE
+
+penguins %>%
+  group_by(species) %>%
+  summarise(statistic = shapiro.test(flipper_length_mm)$statistic,
+              p.value = shapiro.test(flipper_length_mm)$p.value) %>% 
+  knitr::kable()
+```
+
+## 연속형 변수 요약 - 산점도
+
+-   scatter plot : 연속형 변수 2개 사이의 관계를 살펴보는 용도
+
+```{r}
+#| eval: TRUE
+
+penguins %>% ggplot(aes(x=bill_length_mm, y=bill_depth_mm, color = species)) +
+  geom_point() + 
+  theme_minimal()
+
+```
+
+## 연속형 변수 요약 - pairs, ggpairs
+
+-   pairs
+
+```{r}
+pairs(penguins)
+```
+
+-   GGally::ggpairs
+
+```{r}
+#| eval: TRUE
+penguins %>% 
+  GGally::ggpairs( aes(color = species) ) +
+  nord::scale_color_nord('aurora') + # 북유럽풍 칼라
+  nord::scale_fill_nord('aurora') + theme_minimal()
+```
+
+# Table 1 만들기
+
+-   국민 건강 영양 조사 자료 이용
+-   코드북 만들기
+-   변수 정리
+-   table1 패키지를 이용한 table 1 작성 실습
+
+## 국민 건강 영양 조사 {.smaller}
+
+-   국민 건강 영양 조사 자료
+    -   **건강설문조사** : 질병이환, 의료이용, 활동제한 및 삶의 질, 손상(사고중독), 예방접종 및 건강검진, 흡연, 음주, 비만 및 체중조절, 신체활동, 정신건강, 안전의식, 가구조사, 교육 및 경제활동 등
+    -   **검진조사** : 혈압 및 맥박, 신체계측, 근력검사, 혈액검사, 소변검사, 구강검사, 폐기능검사, 결핵, 안검사, 이비인후검사 등
+    -   **영양조사** : 음식 및 식품섭취내용, 식생활행태, 영양지식, 식이보충제, 식품안정성, 수유현황, 이유보충식 등
+-   [원시자료 다운로드 링크](https://knhanes.kdca.go.kr/knhanes/sub03/sub03_02_05.do)
+
+## 자료 읽기
+
+-   측정치 약 7000개 변수 약800개
+
+```{r}
+# data 폴더에서 sas 파일 HN21_ALL.sas7bdat 읽기
+KNHANES21_raw <- rio::import(here('data','HN21_ALL.sas7bdat'))
+
+KNHANES21_raw %>% str
+
+KNHANES21_raw %>% view
+```
+
+## 코드북 만들기 {.smaller .scrollable}
+
+-   원시자료 이용 지침서를 보고 자료구조, 분석방법, 변수설명 확인해야함.
+    -   [원시자료 이용 지침서](https://www.data.go.kr/data/15076556/fileData.do)
+-   *또는* , 변수명에 붙어 있는 라벨을 이용해 코드북을 만들어 볼 수 있음.
+
+```{r eval = TRUE, echo = FALSE}
+# data 폴더에서 sas 파일 HN21_ALL.sas7bdat 읽기
+KNHANES21_raw <- rio::import(here('data','HN21_ALL.sas7bdat'))
+```
+
+```{r}
+#| eval : TRUE
+#| code-line-numbers: 1-5|7
+# 라벨 추출
+KNHANES21_raw_label_look_up  <- tibble(
+  Variables = KNHANES21_raw %>% names(),
+  labels = KNHANES21_raw %>% map_chr(attr_getter("label"))
+)
+
+KNHANES21_raw_label_look_up %>% head() %>% knitr::kable()
+```
+
+## 코드북 만들기 {.smaller .scrollable}
+
+-   list_values_df : functions.R에 들어 있는 내가 만든 function
+    -   변수이름, 변수 종류, 들어 있는 값들
+-   라벨 추출한 data와 join
+
+```{r}
+#| code-line-numbers: 1-4|5-7|8-10
+
+list_values_df(KNHANES21_raw) %>% view
+## 
+list_values_df(KNHANES21_raw) %>% nrow
+## join 하기 전에 체크할 사항을 체크해보세요!
+KNHANES21_codebook <- 
+  full_join(KNHANES21_raw_label_look_up,
+             list_values_df(KNHANES21_raw),by='Variables')
+## 저장하기
+KNHANES21_raw %>% saveRDS(here('data','KNHANES21_raw.RDS')) #용량 감소
+KNHANES21_codebook %>% saveRDS(here('data','KNHANES21_codebook.RDS'))
+```
+
+## 변수 선택 및 질병 정의 {.smaller .scrollable}
+
+```{r}
+#| code-line-numbers: 1-2|4-6|8-11|13-17|19-20
+
+# 분석할 변수 선택
+KNHANES21_main <- KNHANES21_raw %>% select(age, sex, ID, edu)
+
+# 가상의 질병 생성
+KNHANES21_main$disease <- 
+  (sample.int(2,size=KNHANES21_main %>% nrow, replace=TRUE)-1)
+
+# Case = 1 Control = 0
+KNHANES21_main <- KNHANES21_main %>% 
+  mutate(Disease = case_when(disease == 1 ~ 'Case',
+                             TRUE         ~ 'Control'))
+
+# factor 형으로 변환 :
+KNHANES21_main <-KNHANES21_main %>% 
+  mutate(Disease = structure(
+    factor(Disease, levels = c('Case', 'Control') )
+    )    )
+
+# 잘 정의되었는지 확인
+KNHANES21_main %>% count(disease, Disease)
+```
+
+## 변수 정리 - 나이
+
+-   나이는 그룹으로 나누는 경우가 많음(ordinal)
+-   몇살로 나누는 게 좋은가? : 선행연구랑 일치
+
+```{r}
+#| code-line-numbers: 1-6|8-12|14-15
+
+KNHANES21_main <- KNHANES21_main %>% 
+  mutate(Agegp = case_when(age < 35 ~ '<35',
+                           age < 45 ~ '35-44',
+                           age < 55 ~ '45-54',
+                           age < 65 ~ '55-64',
+                           TRUE     ~ '65 or above'))
+
+KNHANES21_main <-KNHANES21_main %>% 
+mutate(Agegp = structure(
+  factor(Agegp,
+         levels = c('<35','35-44','45-54','55-64','65 or above') 
+         )))
+
+label(KNHANES21_main$Agegp) <- "Age group"
+KNHANES21_main$Agegp %>% str
+```
+
+## 변수 정리 - 성별
+
+```{r}
+#| code-line-numbers: 1-3|5-9|11
+KNHANES21_main <- KNHANES21_main %>% 
+  mutate(Sex = case_when(sex == 1 ~ 'Men', 
+                         sex == 2 ~ 'Women'))
+
+KNHANES21_main <-KNHANES21_main %>% 
+  mutate(Sex = structure(
+    factor(Sex,
+           levels = c('Men','Women') 
+    )))
+
+label(KNHANES21_main$Sex) <- "Sex"
+```
+
+## 변수 정리 - 교육
+
+```{r}
+#| code-line-numbers: 1-6|8-12|14
+KNHANES21_main <- KNHANES21_main %>% 
+  mutate(Education = case_when(edu == 1 ~ 'Primary',
+                               edu == 2 ~ 'Middle School',
+                               edu == 3 ~ 'High School',
+                               edu == 4 ~ 'College or above',
+                               is.na(edu) ~ 'Unknown'))
+
+KNHANES21_main <-KNHANES21_main %>% 
+  mutate(Education = structure(
+    factor(Education,
+           levels = c('Primary','Middle School','High School','College or above','Unknown') 
+    )))
+
+label(KNHANES21_main$Education) <- "Education"
+```
+
+## table 1 만들기 {.scrollable .smaller}
+
+-   지금까지 한 거 : 변수 선택 + 필요시 그룹화 + 변수형 변환
+-   table 만드는 것은 간단함
+
+```{r eval = TRUE, echo = FALSE}
+KNHANES21_main <- rio::import(here('data','KNHANES21_main.RDS'))
+```
+
+```{r eval = TRUE}
+library(table1)
+table1(~ age + Agegp + Sex + Education |Disease, data=KNHANES21_main) %>%
+  knitr::kable()
+```
+
+## table 1 만들기 {.scrollable .smaller}
+
+-   p-value : pvalue 라는 자체 제작 함수 이용
+
+```{r eval = TRUE}
+
+table1(~ age + Agegp + Sex + Education |Disease, data=KNHANES21_main, overall=F, extra.col=list(`P-value`=pvalue)) %>%
+  knitr::kable()
+```
+
+## table 1 만들기 {.scrollable .smaller}
+
+-   층화
+
+```{r eval = TRUE}
+# 층화
+table1(~ age + Agegp + Education |Disease*Sex, data=KNHANES21_main) %>% 
+  htmlTable::htmlTable()
+```
+
+## gtsummary를 이용한 table 1 {.smaller .scrollable}
+
+```{r eval = TRUE}
+library(gtsummary)
+KNHANES21_main %>% select(age, Agegp, Sex, Education, Disease) %>% 
+  tbl_summary(by = 'Disease') %>% add_overall()
+```
+
+## gtsummary를 이용한 table 1 {.smaller .scrollable}
+
+```{r eval = TRUE}
+KNHANES21_main %>% select(age, Agegp, Sex, Education, Disease) %>% 
+  tbl_summary(by = 'Disease') %>% add_p()
+```
+
+## gtsummary를 이용한 table 1 {.smaller .scrollable}
+
+```{r eval = TRUE}
+KNHANES21_main %>% 
+  select(age, Agegp, Sex, Education, Disease) %>%
+  tbl_strata(
+    strata = Disease,
+    .tbl_fun = 
+      ~ .x %>% 
+      tbl_summary( by = Sex)
+  )
+```
+
+# 추론 통계 개념
+
+-   모집단
+-   가설 검정
+-   귀무가설, 대립가설
+-   p-value
+
+## 추론 통계
+
+-   내가 가진 표본을 통해서 모집단의 진실을 추론하는 통계
+    -   신의 진실[^2]을 엿보는 것
+-   모집단
+    -   내 연구의 관심 집단
+    -   표본을 이용해 일반화 + potentially infinite
+
+[^2]: 임현우 교수님 말씀
+
+## 모집단의 진실
+
+-   모집단의 진실이란?
+    -   평균, 분산, 분포
+    -   X에 따른 Y의 증가량(𝛃)
+-   통계적 추론을 통해 모집단의 진실에 다가가는 법
+    -   점추정(point estimate)
+    -   구간추정(interval estimate)
+    -   **가설 검정**
+    -   클러스터링, 분류 등
+
+## 모집단에 대한 가정 {.smaller}
+
+-   모집단이 정규 분포를 따르면 모수 검정할 수 있다
+    -   가정 체크해야함
+    -   내 표본 + 선행연구
+-   모수 vs 비모수
+    -   모수 :
+        -   가정을 체크하려면 표본(\> 20)
+        -   통계 검정력이 더 큼.
+    -   비모수
+        -   정규분포 아닐 때
+        -   표본 너무 적을 때
+            -   (추천) 표본을 더 모아라
+
+::: footer
+[Read more here](https://www.healthknowledge.org.uk/public-health-textbook/research-methods/1b-statistical-methods/parametric-nonparametric-tests)
+:::
+
+## 가설 : 귀무가설, 대립가설
+
+-   가설 : 모집단에 관한 통계적인 추정
+    -   귀무가설 = 영가설 = H0 = null hypothesis
+        -   예) 개발한 신약은 기존 치료법과 효과 차이가 **없다**
+    -   대립가설 = 대안가설 = H1 = Alternative hypothesis
+        -   예) 개발한 신약은 기존 치료법과 효과 차이가 **있다**
+
+## 가설 검정
+
+-   모집단에 대한 가정(정규 분포 등)과 귀무가설이 참이라는 *가정*하에
+-   **적절하게 선택한 통계 테스트**를 통해
+    -   내 표본의 통계량(test statistics)을 계산
+    -   통계량을 가지고 **p-value**를 계산
+-   채점기준(보통 5%)에 따라 p-value 값을 평가
+    -   **귀무가설을 기각 또는 기각 실패**
+
+## p-value {.smaller}
+
+::: columns
+::: column
+-   내 표본의 통계량(test statistics)
+    -   표본의 개수에 따라 자유도가 정해짐
+-   **p-value**
+    -   귀무가설이 참이라는 가정 하에 내 표본의 통계량보다 **더 극단적인 값이 나올 확률**
+-   **p-value 해석**
+    -   10% 나왔다
+        -   귀무가설은 틀린 거야
+        -   귀무가설이 맞는데 우리 표본이 특이한 10%였을 뿐이야
+    -   우리 업계 표준은 5%
+:::
+
+::: column
+![](images/t_distribution.webp)
+:::
+:::
+
+::: footer
+Read more on [t distribution](https://www.jmp.com/en_us/statistics-knowledge-portal/t-test/t-distribution.html#:~:text=The%20t%2Ddistribution%20is%20defined,similar%20to%20a%20normal%20distribution.)
+:::
+
+## p-value에 대한 오해 {.smaller .scrollable}
+
+-   낮을 수록 좋아?
+    -   채점 기준보다 낮으면 귀무가설을 기각할 수 있을 뿐.
+
+    -   귀무가설이 무엇인지 확인해야함.
+
+        -   shapiro test : 정규분포다! 가 귀무가설임.
+        -   table 1의 p-value : 두 집단이 차이가 없다가 귀무가설
+
+        ```{r eval = TRUE}
+        KNHANES21_main %>% select(age, Agegp, Sex, Education, Disease) %>% 
+          tbl_summary(by = 'Disease') %>% add_p()
+        ```
+
+## p-value에 대한 오해 OX 퀴즈
+
+-   p-value는 귀무가설이 참일 확률이다( )
+-   p-value는 대립가설이 거짓일 확률이다( )
+-   p-value 채점기준 5%는 업계 합의사항일 뿐이다( )
+-   p-value가 작을수록 내 연구 샘플의 effect size는 커진다( )
+
+::: footer
+Read more on [Misuse of p-value](https://en.wikipedia.org/wiki/Misuse_of_p-values)
+:::
+
+## p-value 실습 : t-test {.smaller}
+
+-   연구 : 모집단은 평균 0, 분산 1이지만, 모른다고 치고 샘플을 10개 뽑아서 평균 추정하는 연구
+
+-   귀무가설 : 모집단 평균은 0이다.
+
+```{r eval = TRUE}
+## 평균 0 분산 1인 모집단에서 표본 10개 추출
+my_sample <- rnorm(10)
+my_sample
+
+t.test(my_sample) # t.test(my_sample) %>% str 를 해보시면 좋습니다.
+```
+
+## p-value 실습 : t-test 100회 {.smaller .scrollable}
+
+-   앞 슬라이드 연구를 100회 반복
+
+```{r eval = TRUE}
+#| code-line-numbers: 1-2|4|5-8|9-15
+# random number 발생시킬 때는 재현성을 위해 seed 지정 해줌
+set.seed(202308)
+
+ID <- rep(1:100,10) # 표본을 10개 씩 추출하는 연구를 100번 수행
+test_p <- data.frame(
+  ID = ID,  
+  value = rnorm(length(ID))  #모집단은 평균 0 분산 1인 정규분포를 따름
+)
+test_p %>% group_by(ID) %>% 
+  summarise(p_value = t.test(value)$p.value,
+            mean_estimate = t.test(value)$estimate,
+            CI_lower = t.test(value)$conf.int[1],
+            CI_upper = t.test(value)$conf.int[2],
+            statistics = t.test(value)$statistic) %>% 
+  arrange(p_value) %>% head()
+```
+
+## 추론 통계 과정 {.smaller .scrollable}
+
+-   **데이터**와 **분석할 가설**에 대해 고민
+-   변수 종류(연속/명목)에 따른 **적절한 통계 테스트** 찾기
+-   통계 테스트 돌릴 수 있는 지 **가정 체크**
+-   R로 통계 테스트
+-   p-value를 채점 기준(0.05)과 비교해 **해석**
+
+## 적절한 통계 테스트 선택 {.smaller .scrollable}
+
+-   X = 독립변수 = 원인변수 = 설명변수 = 예측변수
+-   Y = 종속변수 = 결과변수 = 반응변수
+-   Y 가 연속형
+    -   X에 따라 Y값의 평균 혹은 기울기를 추정하고 유의한 차이가 있는지 검정
+    -   T-test : X가 이분형(남자/여자)
+    -   ANOVA : X가 범주형(저체중/정상/비만)
+    -   선형회귀분석 : X 연속형
+-   Y 가 범주형
+    -   X에 따라 Y의 빈도, OR, RR 추정하고 유의한 차이가 있는지 검정
+    -   카이제곱 : X가 범주형
+    -   로지스틱 회귀 분석 : X 관계 없이
+
+## 적절한 통계 테스트 선택 - 표 {.smaller .scrollable}
+
++------------+------------+---------------------------------+--------------------------------+---------------------------+
+|            |            | X 변수                          |                                |                           |
++============+============+=================================+================================+===========================+
+|            |            | 범주형                          | 연속형                         | X 변수 관계없이           |
++------------+------------+---------------------------------+--------------------------------+---------------------------+
+| **Y 변수** | 범주형     | 카이제곱 검정                   |                                | **로지스틱 회귀분석**[^3] |
++------------+------------+---------------------------------+--------------------------------+---------------------------+
+|            | 연속형     | (X가 이분형) independent t-test | 선형회귀분석                   | **일반화 선형 모델**      |
+|            |            |                                 |                                |                           |
+|            |            | (X가 3개 이상) ANOVA            |                                |                           |
++------------+------------+---------------------------------+--------------------------------+---------------------------+
+|            | 용도       | table 1에서 집단 특징 정리      | 변수 보정해서 표2,3 main table |                           |
++------------+------------+---------------------------------+--------------------------------+---------------------------+
+
+[^3]: 로지스틱 회귀 분석도 일반화 선형 모델에 포함되지만, 초보자용으로 정리.
+
+# 추론 통계 - Y가 연속형
+
+-   independent t-test
+-   ANOVA
+-   선형회귀분석
+-   일반화 선형 모델
+
+## independent t-test
+
+-   X(이분형 변수, 예 - 남녀)에 따라 Y(연속형 변수, 예 - BMI)에 차이가 있는지 테스트 해줌.
+
+-   가정
+
+    -   X 독립성[^4]\
+    -   Y의 정규성[^5]
+    -   등분산성 : Y의 분산은 각 군마다 동일[^6]
+
+[^4]: 독립이 아닌 경우 예: 비만 치료 전 후로 BMI를 측정했다
+
+[^5]: It is widely but incorrectly believed that the t-test and linear regression are valid only for Normally distributed outcomes. See [here](https://www.annualreviews.org/doi/10.1146/annurev.publhealth.23.100901.140546)
+
+[^6]: 분산이 다른 경우 p-value에 패널티를 줘서 계산하는 방법이 있음
+
+## independent t-test - 실습 {.smaller .scrollable}
+
+-   국민 건강영양조사 자료를 통해 남녀 사이의 BMI 차이가 있는지 확인
+    -   X = 남/녀 + Y = BMI
+
+```{r eval = TRUE}
+KNHANES21_raw <- rio::import(here('data','KNHANES21_raw.RDS'))
+
+Men_BMI <- KNHANES21_raw %>% filter(sex == 1, !is.na(HE_BMI)) %>% pull(HE_BMI)
+Women_BMI <- KNHANES21_raw %>% filter(sex == 2, !is.na(HE_BMI)) %>% pull(HE_BMI)
+# 정규성 확인 
+shapiro.test(Men_BMI)
+shapiro.test(Women_BMI)
+# 등분산성 확인
+var.test(Men_BMI, Women_BMI)
+# 등분산성 체크하고 t-test 수행
+t.test(Men_BMI, Women_BMI, var.equal = T)
+```
+
+## Wilcoxon rank sum test
+
+-   independent t-test 비모수 버전
+
+```{r eval = TRUE}
+wilcox.test(Men_BMI, Women_BMI)
+```
+
+## 잠깐, 우리 연구의 문제점은?
+
+::: incremental
+-   연구 : 국민 건강영양조사 자료를 통해 남녀 사이의 BMI 차이가 있는지 확인
+
+-   모집단은?
+
+-   층화 샘플링 : 국건영을 비롯해 많은 조사에서 이용.
+
+    -   표본 수가 적은 strata에서 정확도를 개선하기 위해서 oversampling을 함
+
+-   가중치는 이종인 교수님과 함께..
+:::
+
+::: footer
+Read more [here](https://blog.naver.com/stat833/221747335785)
+:::
+
+## ANOVA
+
+-   X(범주형 변수, 예 - 소득수준 )에 따라 Y(연속형 변수, 예 - BMI)에 차이가 있는지 테스트 해줌.
+
+-   가정
+
+    -   X 독립성[^7]\
+    -   Y의 정규성[^8]
+    -   등분산성 : Y의 분산은 각 군마다 동일[^9]
+
+[^7]: 독립이 아닌 경우 예: 비만 치료 전 후로 BMI를 측정했다
+
+[^8]: It is widely but incorrectly believed that the t-test and linear regression are valid only for Normally distributed outcomes. See [here](https://www.annualreviews.org/doi/10.1146/annurev.publhealth.23.100901.140546)
+
+[^9]: 분산이 다른 경우 p-value에 패널티를 줘서 계산하는 방법이 있음
+
+## ANOVA - 실습
+
+-   국민 건강영양조사 자료를 통해 소득수준 4단계에 따른 BMI 차이가 있는지 확인
+    -   X = 최하/중하/중상/최상 + Y = BMI
+
+```{r eval = TRUE}
+#| code-line-numbers: 1|2-4|6-7 
+KNHANES21_temp <- KNHANES21_raw
+KNHANES21_temp$ho_incm <- 
+  factor(KNHANES21_temp$ho_incm, levels=c('1','2','3','4'),
+         labels=c('lowest','mid-low','mid-high','high'))
+
+KNHANES21_temp <- KNHANES21_temp %>%
+  filter(!is.na(ho_incm),!is.na(HE_BMI))
+```
+
+## ANOVA - 실습 {.smaller .scrollable}
+
+-   국민 건강영양조사 자료를 통해 소득수준 4단계에 따른 BMI 차이가 있는지 확인
+    -   X = 최하/중하/중상/최상 + Y = BMI
+
+::: panel-tabset
+### 표
+
+```{r eval = TRUE}
+# 소득수준 별 BMI 평균, 표준편차
+KNHANES21_temp %>% 
+  group_by(ho_incm) %>%
+  summarise(mean=mean(HE_BMI), sd=sd(HE_BMI)) %>%
+  ungroup() %>% knitr::kable()
+```
+
+### box plot
+
+```{r eval = TRUE}
+KNHANES21_temp %>% 
+  ggplot(aes(x=ho_incm, y=HE_BMI)) + 
+  geom_boxplot() +
+  theme_minimal()
+```
+:::
+
+## ANOVA - 실습 - 정규성 {.smaller .scrollable}
+
+-   정규성 확인
+
+::: panel-tabset
+### shapiro test
+
+```{r eval = TRUE}
+KNHANES21_temp %>% 
+  group_by(ho_incm) %>% 
+  summarise(p_value = shapiro.test(HE_BMI)$p.value)
+```
+
+### qq plot
+
+```{r eval = TRUE}
+KNHANES21_temp %>% ggplot(aes(sample = HE_BMI, color=ho_incm)) +
+  geom_qq() +
+  geom_qq_line() + facet_wrap(vars(ho_incm)) + theme_minimal()
+```
+:::
+
+## ANOVA - 실습 - 등분산성
+
+-   등분산성 확인
+
+```{r eval = TRUE}
+## 귀무가설 : 분산이 그룹별로 다 같다.
+bartlett.test(HE_BMI ~ ho_incm,data=KNHANES21_temp)
+```
+
+## ANOVA - 실습
+
+```{r eval = TRUE}
+## 귀무가설 : 평균이 그룹별로 다 같다.
+fit <- aov(HE_BMI ~ ho_incm, data=KNHANES21_temp)
+summary(fit)
+```
+
+## Kruskall-Wallis test
+
+-   Kruskall-Wallis test
+    -   ANOVA 비모수 버전
+
+```{r eval= TRUE}
+## 귀무가설 : 평균이 그룹별로 다 같다.
+kruskal.test(HE_BMI ~ ho_incm,data=KNHANES21_temp)
+```
+
+## ANOVA - post hoc analysis {.smaller}
+
+::: incremental
+-   귀무가설을 기각한 다음은..?
+-   귀무가설 : 평균이 그룹별로 다 같다.
+-   대립가설 : 평균이 그룹별로 다 같은 건 아니다.
+    -   최하 BMI 랑 중하 BMI가 다르다
+    -   또는, 최하 BMI 랑 중상 BMI가 다르다
+    -   또는, 최하 BMI 랑 최상 BMI가 다르다.
+    -   또는, 중하 BMI 랑 중상 BMI가 다르다.
+    -   또는, 중하 BMI 랑 최상 BMI가 다르다.
+    -   또는, 중상 BMI 랑 최상 BMI가 다르다.
+-   어떤 그룹끼리 평균이 유의하게 다른지는 **추가분석(Post hoc analysis)** 해야 알 수 있다.
+:::
+
+## ANOVA - post hoc analysis {.smaller}
+
+-   애초에 t-test를 여러 번 하면 안 되나?
+
+-   안됨. test를 할 때마다 오류날 확률이 쌓이게 됨!
+
+```{r eval = TRUE}
+# 제대로 될 확률이 95%인데 6번 연속하면..
+round(0.95^6,2)
+```
+
+## post hoc analysis {.smaller}
+
+-   ?? : 차이가 나는 그룹들을 알아내려면 pairwise 비교 해야하는데
+-   통계학자들 : ㅇㅇ 대신 채점기준을 더 빡세게
+    -   bonferroni correction : 0.05/N
+-   (실무) 이미 있는 테스트를 골라서 쓰면 된다.
+    -   Bonferroni adjustment
+    -   Dun-nett's test
+    -   **Tukey's test**
+    -   Least-significant difference test
+    -   NewmanKeuls test
+
+## 사후분석 - Tukey
+
+```{r eval = TRUE}
+# ANOVA로 만든 fit에 적용해서 비교
+TukeyHSD(fit)
+```
+
+## 사후분석 - pairwise.wilcox.test
+
+-   비모수 버전
+-   p value 조절 알고리즘을 선택
+
+```{r eval = TRUE}
+pairwise.wilcox.test(KNHANES21_temp$HE_BMI, KNHANES21_temp$ho_incm,
+                     p.adjust.method = "BH") #Benjamini & Hochberg
+```
+
+::: footer
+[Read more on post-hoc test for non-parametric comparison](https://microbiome.github.io/tutorials/post_hoc.html)
+:::
+
+## Multiple comparison problem
+
+-   한 데이터로 여러 번 p-value를 평가하는 연구는 채점기준에 비해 오류가 증가할 가능성이 높음.
+
+-   신약의 효과를 검증하는 연구
+
+    -   연구 대상 증상이 늘어나면, 증상 하나 정도는 신의 진실과 관계없이 효과가 있는 걸로 나올 수 있다.
+
+-   p-value fishing : "여러가지 해보다가 p value 잘 나온 걸로 했어요"
+
+-   그래서 사전 연구 계획서를 등록하고 딱 한번만
+
+## 선형회귀 {.smaller}
+
+-   X(연속형 변수, 예 - 펭귄부리길이 )에 따라 Y(연속형 변수, 예 - 펭귄부리두께)가 달라지는지 테스트 해줌.
+    -   기울기가 0인지 아닌지
+-   가정
+    -   정규성 : Y 정규분포
+    -   선형성 : X와 Y가 선형관계[^10]
+    -   자기상관성 : 오차항은 자기 상관이 없음[^11]\
+    -   등분산성 : X변화에 따라 잔차가 일정하게 분포
+    -   비상관성=독립성 : X 변수들 간에 독립성. 실패시 **Multicollinearity**가 있다고 함. [^12]
+
+[^10]: 안되면, 다른 변수를 추가해보거나, 로그, 지수 변환 등 시도
+
+[^11]: 반복 측정시 발생하는 문제
+
+[^12]: 변수 제거 등 시도
+
+::: footer
+Read more on [SLR](https://www.kellerbiostat.com/introregression/slr#slr-model-assumptions)
+:::
+
+## 선형회귀 실습 {.smaller .scrollable}
+
+-   펭귄 중 Adelie만 선택해서 실습
+-   R2 : 1에 가까울수록 선형 회귀 모델 적합성이 높음.
+
+```{r eval = TRUE}
+data_for_lm <- penguins %>%
+                  filter(species =='Adelie')
+
+lm_result <- lm(bill_length_mm ~ bill_depth_mm, 
+                data = data_for_lm)
+lm_result %>% summary
+lm_result %>% tidy
+## 신뢰구간이 궁금하다:
+confint(lm_result)
+```
+
+## 선형회귀 실습 - 그래프 {.smaller}
+
+```{r eval = TRUE}
+points <- augment(lm_result)
+
+## plot the data using age as the x-axis 
+ggplot(points, aes(x = bill_depth_mm)) + 
+  ## add points for height 
+  geom_point(aes(y = bill_length_mm)) + 
+  ## add your regression line 
+  geom_line(aes(y = .fitted), colour = "red") + theme_minimal()
+```
+
+## 선형회귀 실습 {.smaller}
+
+-   일반선형회귀모델 glm 이용
+-   family 를 gaussian으로 지정해주면 선형회귀모델임.
+
+```{r eval = TRUE}
+lm_result_2 <- glm(bill_length_mm ~ bill_depth_mm, 
+                data = data_for_lm, family = 'gaussian')
+```
+
+## 다중 선형 회귀 분석
+
+-   단순 선형 회귀 모델 :
+    -   Y \~ X
+-   보통 논문을 쓸 때는 변수가 여러 개..
+    -   Y \~ X1 + X2 + ... + Xn
+    -   보통 X1 이 주인공, 나머지 X2 ... Xn 은 보정 변수
+
+## 다중 선형 회귀 분석 {.smaller .scrollable}
+
+```{r eval = TRUE }
+lm_result_full <- glm(bill_length_mm ~
+                        bill_depth_mm + body_mass_g + flipper_length_mm, 
+                   data = data_for_lm, family = 'gaussian')
+
+lm_result_full %>% summary
+
+# Stepwise regression model
+step.model <- MASS::stepAIC(lm_result_full, direction = "both", 
+                      trace = FALSE)
+
+summary(step.model)
+```
+
+::: footer
+[MASS는 dplyr select와 충돌 가능성이 있음 주의](https://hollyemblem.medium.com/handling-dplyr-and-mass-select-clashes-7c88258fd9d0)
+:::
+
+# 추론 통계 - Y가 명목형
+
+-   카이 제곱 검정
+-   로지스틱 회귀분석
+
+## 카이제곱 검정 {.smaller .scrollable}
+
+-   X(이분형 변수, 예 - 남녀)에 따라 Y(범주형 변수, 예 - 고혈압 유무)에 차이가 있는지 테스트 해줌.
+    -   X, Y가 독립이라고 했을 때 기대 빈도와 실제 빈도에 차이가 있는가
+-   카이제곱 기대 빈도와 실제 빈도를 이용해 통계량 계산 -\> Chi-squared distribution
+
+|           | 남자 | 여자 | 합계 |
+|-----------|------|------|------|
+| 고혈압(+) |      |      | 25   |
+| 고혈압(-) |      |      | 75   |
+| 합계      | 50   | 50   | 100  |
+
+## 카이제곱 검정과 비슷비슷한 검정들
+
+-   카이제곱 - chisq.test
+-   Cochran--Mantel--Haenszel - mantelhaen.test
+    -   순서형 명목 변수일 때
+-   피셔 정확 검정(Fisher's exact test) - fisher.test
+    -   기대빈도가 5미만으로 너무 적을 때
+-   McNemar's test : paired 된 경우
+
+## 카이제곱 검정 - 실습 - 변수 준비 {.smaller .scrollable}
+
+```{r eval = TRUE}
+# 분석할 변수 가공
+KNHANES21_category <- KNHANES21_raw
+
+#self-rated-health : 
+KNHANES21_category <- KNHANES21_category %>% 
+  filter(!is.na(D_1_1)) %>% 
+  mutate(self_rated_health = case_when(D_1_1 %in% c(1,2,3) ~ 'Good',
+                         TRUE ~ 'Poor')) %>%
+  mutate(self_rated_health = structure(
+  factor(self_rated_health,
+         levels = c('Good','Poor') 
+         )))
+
+#sex : 
+KNHANES21_category <- KNHANES21_category %>% 
+  mutate(sex = case_when(sex == 1 ~ 'Men',
+                         sex == 2 ~ 'Women')) %>%
+  mutate(sex = structure(
+  factor(sex,
+         levels = c('Men','Women') 
+         )))
+
+KNHANES21_category$ho_incm <- 
+  factor(KNHANES21_category$ho_incm, levels=c('1','2','3','4'),
+         labels=c('lowest','mid-low','mid-high','high'))
+
+#Hypertension
+KNHANES21_category <- KNHANES21_category %>% 
+  mutate(Hypertension = case_when(DI1_dg == 1 ~ 'Yes',
+                               DI1_dg == 0 ~ 'No',
+                               TRUE ~ 'Unknown'))
+KNHANES21_category <-KNHANES21_category %>% 
+mutate(Hypertension = structure(
+  factor(Hypertension,
+         levels = c('No','Yes','Unknown') 
+         )))
+#Dyslipidemia
+KNHANES21_category <- KNHANES21_category %>% 
+  mutate(Dyslipidemia = case_when(DI2_dg == 1 ~ 'Yes',
+                               DI2_dg == 0 ~ 'No',
+                               TRUE ~ 'Unknown'))
+KNHANES21_category <-KNHANES21_category %>% 
+mutate(Dyslipidemia = structure(
+  factor(Dyslipidemia,
+         levels = c('No','Yes','Unknown') 
+         )))
+#Stroke
+KNHANES21_category <- KNHANES21_category %>% 
+  mutate(Stroke = case_when(DI3_dg == 1 ~ 'Yes',
+                               DI3_dg == 0 ~ 'No',
+                               TRUE ~ 'Unknown'))
+KNHANES21_category <-KNHANES21_category %>% 
+mutate(Stroke = structure(
+  factor(Stroke,
+         levels = c('No','Yes','Unknown') 
+         )))
+
+#Diabetes
+KNHANES21_category <- KNHANES21_category %>% 
+  mutate(Diabetes = case_when(DE1_dg == 1 ~ 'Yes',
+                               DE1_dg == 0 ~ 'No',
+                               TRUE ~ 'Unknown'))
+KNHANES21_category <-KNHANES21_category %>% 
+mutate(Diabetes = structure(
+  factor(Diabetes,
+         levels = c('No','Yes','Unknown') 
+         )))
+```
+
+## 카이제곱 검정 - 실습 {.smaller .scrollable}
+
+```{r eval = TRUE}
+## 빈도 table 만들기
+table(KNHANES21_category$Hypertension , KNHANES21_category$sex)
+
+## 카이검정
+chisq.test(KNHANES21_category$Hypertension, KNHANES21_category$sex)
+
+Hypertension_sex_table <- table(KNHANES21_category$Hypertension,KNHANES21_category$sex)[2:1,1:2]
+
+Hypertension_sex_table
+
+Hypertension_sex_table %>% chisq.test()
+
+fisher.test(Hypertension_sex_table)
+
+fisher.test(Hypertension_sex_table) %>% tidy
+```
+
+## 로지스틱 회귀분석 {.smaller .scrollable}
+
+-   X(연속형/명목형 변수)에 따라 Y(이분형 변수, 예 - 고혈압 유무)가 달라지는지 테스트 해줌.
+
+## 로지스틱 회귀분석 {.smaller .scrollable}
+
+-   glm 모델에 X 변수로 범주형 하나만 넣으면, 앞서 구한 OR이 또 나옵니다.
+-   **familiy = "binomial"**
+
+```{r eval = TRUE}
+#| code-line-numbers: 1-2
+## Ref 값 변경
+KNHANES21_category$sex <- relevel(KNHANES21_category$sex, ref='Women')
+## Hypertension factor 정의할 때 No가 Ref 값으로 정의됨.
+fit_sex <- 
+  glm(Hypertension ~ sex , family='binomial',
+               data=KNHANES21_category %>% filter(Hypertension !='Unknown')
+               ) 
+fit_sex
+tidy(fit_sex)
+tidy(fit_sex, exponentiate = TRUE)
+exp(coef(fit_sex)) # exponentiated coefficients - 좀 전에 구한 OR과 비슷한 값
+```
+
+## 로지스틱 회귀분석 - gtsummary {.smaller .scrollable}
+
+-   gtsummary를 이용하면 예쁜 표를 바로 만들 수 있습니다.
+
+```{r eval = TRUE}
+fit_sex %>% gtsummary::tbl_regression(exponentiate = TRUE)
+```
+
+## 로지스틱 회귀분석 - 다중 {.smaller .scrollable}
+
+-   연속형, 명목형 여러 개 넣어서 분석 가능
+-   단, 모델에 설명 변수를 마구 넣으면 해석이 어렵다.
+-   대개 glm 모델 하나로 table 만들지 않음..
+
+```{r eval = TRUE}
+fit_full <- glm(Hypertension ~ age + sex + ho_incm + Diabetes + Dyslipidemia, family='binomial',
+               data=KNHANES21_category %>% filter(Hypertension !='Unknown')
+               ) 
+
+fit_full %>% gtsummary::tbl_regression(exponentiate = TRUE)
+```
+
+## 로지스틱 회귀분석 - table 2 {.smaller .scrollable}
+
+-   table 2 만들기 실습
+-   Y : self_rated_health
+-   X들 : Hypertension, Diabetes, Dyslipidemia, Stroke
+-   보정 변수 : age sex
+
+```{r eval = TRUE}
+## 질병들 마다 모델이 하나씩 생김
+
+## Hypertension
+fit_Hypertension <- glm(self_rated_health ~ age + sex + Hypertension, family='binomial',
+                data=KNHANES21_category ) 
+
+Hypertension_summary <- fit_Hypertension %>% gtsummary::tbl_regression(include ='Hypertension',exponentiate = TRUE)
+
+Hypertension_summary
+
+
+```
+
+## 로지스틱 회귀분석 - table 2 {.smaller .scrollable}
+
+-   table 2 만들기 실습
+
+-   Y : self_rated_health
+
+-   X들 : Hypertension, Diabetes, Dyslipidemia, Stroke
+    -   Hypertension을 다른 질병 변수로 바꾸면 작업이 편해짐.
+    
+
+-   보정 변수 : age sex
+
+```{r eval = TRUE}
+## 질병들 마다 모델이 하나씩 생김
+
+
+## Diabetes
+fit_Diabetes <- glm(self_rated_health ~ age + sex + Diabetes, family='binomial',
+                    data=KNHANES21_category ) 
+
+Diabetes_summary <- fit_Diabetes %>% gtsummary::tbl_regression(include ='Diabetes',exponentiate = TRUE)
+
+Diabetes_summary
+
+
+```
+
+## 로지스틱 회귀분석 - table 2 {.smaller .scrollable}
+
+-   table 2 만들기 실습
+
+-   Y : self_rated_health
+
+-   X들 : Hypertension, Diabetes, Dyslipidemia, Stroke
+    -   Hypertension을 다른 질병 변수로 바꾸면 작업이 편해짐.
+
+-   보정 변수 : age sex
+
+```{r eval = TRUE}
+## 질병들 마다 모델이 하나씩 생김
+
+
+## Dyslipidemia
+fit_Dyslipidemia <- glm(self_rated_health ~ age + sex + Dyslipidemia, family='binomial',
+                        data=KNHANES21_category ) 
+
+Dyslipidemia_summary <- fit_Dyslipidemia %>% gtsummary::tbl_regression(include ='Dyslipidemia',exponentiate = TRUE)
+
+Dyslipidemia_summary
+
+```
+
+## 로지스틱 회귀분석 - table 2 {.smaller .scrollable}
+
+-   table 2 만들기 실습
+
+-   Y : self_rated_health
+
+-   X들 : Hypertension, Diabetes, Dyslipidemia, Stroke
+    -   Hypertension을 다른 질병 변수로 바꾸면 작업이 편해짐.
+    
+-   보정 변수 : age sex
+
+```{r eval = TRUE}
+## 질병들 마다 모델이 하나씩 생김
+
+
+## Stroke
+fit_Stroke <- glm(self_rated_health ~ age + sex + Stroke, family='binomial',
+                  data=KNHANES21_category ) 
+
+Stroke_summary <- fit_Stroke %>% gtsummary::tbl_regression(include ='Stroke',exponentiate = TRUE)
+
+Stroke_summary
+
+```
+
+## 로지스틱 회귀분석 - table 2 - 합체 {.smaller .scrollable}
+
+-   table 2 만들기 실습
+
+-   Y : self_rated_health
+
+-   X들 : Hypertension, Diabetes, Dyslipidemia, Stroke
+
+-   보정 변수 : age sex
+
+```{r eval = TRUE}
+# 대망의 합체 시간
+
+tbl_stack(list(Hypertension_summary,
+               Diabetes_summary,
+          Dyslipidemia_summary,
+          Stroke_summary))
+```
+
+# 추론 통계 예제
+
+-   무슨 통계 테스트를 쓸까
+
+## 예제 1 {.smaller .scrollable}
+
+-   A 고등학교에서 남학생 200명과 여학생 200명의 수축기 혈압을 비교하고자 한다.
+-   남학생의 이완기 혈압은 여학생 이완기 혈압과 차이가 있는가?
+
+::: footer
+안준호 교수님의 2023 동계 SAS 워크샵 내용을 참고했습니다.
+:::
+
+## 예제 1 {.smaller .scrollable}
+
+-   A 고등학교에서 남학생 200명과 여학생 200명의 수축기 혈압을 비교하고자 한다.
+-   남학생의 이완기 혈압은 여학생 이완기 혈압과 차이가 있는가?
+    -   X: 남학생/여학생(범주형)
+    -   Y: 이완기혈압(연속형)
+
++------------+------------+-------------------------------------+--------------+-------------------+
+|            |            | X 변수                              |              |                   |
++============+============+=====================================+==============+===================+
+|            |            | **범주형**                          | 연속형       | X 변수 관계없이   |
++------------+------------+-------------------------------------+--------------+-------------------+
+| **Y 변수** | 범주형     | 카이제곱 검정                       |              | 로지스틱 회귀분석 |
++------------+------------+-------------------------------------+--------------+-------------------+
+|            | **연속형** | **(X가 이분형) independent t-test** | 선형회귀분석 | 일반화 선형 모델  |
+|            |            |                                     |              |                   |
+|            |            | (X가 3개 이상) ANOVA                |              |                   |
++------------+------------+-------------------------------------+--------------+-------------------+
+
+::: footer
+안준호 교수님의 2023 동계 SAS 워크샵 내용을 참고했습니다.
+:::
+
+## 예제 2 {.smaller .scrollable}
+
+-   환자 연령군에 따른(20대 50명 30대 50명 40대 50명) 약효가 나타나는 시간을 비교하고자 한다.
+-   각 연령군에 따라 약효의 차이가 있는가?
+-   있다면 어느 연령군 사이에서 차이가 있는가?
+
+::: footer
+안준호 교수님의 2023 동계 SAS 워크샵 내용을 참고했습니다.
+:::
+
+## 예제 2 {.smaller .scrollable}
+
+-   환자 연령군에 따른(20대 50명 30대 50명 40대 50명) 약효가 나타나는 시간을 비교하고자 한다.
+-   각 연령군에 따라 약효의 차이가 있는가?
+-   있다면 어느 연령군 사이에서 차이가 있는가? **post hoc analysis**
+    -   X: 20대/30대/40대(범주형)
+    -   Y: 약효가 나타나는 시간(연속형)
+
++------------+------------+----------------------------------+--------------+-------------------+
+|            |            | X 변수                           |              |                   |
++============+============+==================================+==============+===================+
+|            |            | **범주형**                       | 연속형       | X 변수 관계없이   |
++------------+------------+----------------------------------+--------------+-------------------+
+| **Y 변수** | 범주형     | 카이제곱 검정                    |              | 로지스틱 회귀분석 |
++------------+------------+----------------------------------+--------------+-------------------+
+|            | **연속형** | (X가 이분형) independent t-test\ | 선형회귀분석 | 일반화 선형 모델  |
+|            |            | **(X가 3개 이상) ANOVA**         |              |                   |
++------------+------------+----------------------------------+--------------+-------------------+
+
+::: footer
+안준호 교수님의 2023 동계 SAS 워크샵 내용을 참고했습니다.
+:::
+
+## 예제 3 {.smaller .scrollable}
+
+-   담석 치료를 위하여 충격파 쇄석술을 적용한 35명을 대상으로 담석이 효과적으로 파괴될 때까지의 시간과 담석의 총 무게 및 residual stone의 무게, residual stone 중 칼슘의 함량, bilirubin 함량, 그리고 콜레스테롤 함량을 측정하여 결과를 얻었다.
+-   콜레스테롤의 함량은 담석 파괴 소요 시간에 유의한 영향을 미치고 있다고 보겠는가?
+
+::: footer
+안준호 교수님의 2023 동계 SAS 워크샵 내용을 참고했습니다.
+:::
+
+## 예제 3 {.smaller .scrollable}
+
+-   담석 치료를 위하여 충격파 쇄석술을 적용한 35명을 대상으로 담석이 효과적으로 파괴될 때까지의 시간과 담석의 총 무게 및 residual stone의 무게, residual stone 중 칼슘의 함량, bilirubin 함량, 그리고 콜레스테롤 함량을 측정하여 결과를 얻었다.
+-   콜레스테롤의 함량은 담석 파괴 소요 시간에 유의한 영향을 미치고 있다고 보겠는가?
+    -   X: 콜레스테롤 함량(연속형)
+    -   Y: 담석 파괴 소요시간(연속형)
+
++------------+------------+----------------------+------------------+-------------------+
+|            |            | X 변수               |                  |                   |
++============+============+======================+==================+===================+
+|            |            | 범주형               | 연속형           | X변수 관계 없이   |
++------------+------------+----------------------+------------------+-------------------+
+| **Y 변수** | 범주형     | 카이제곱 검정        |                  | 로지스틱 회귀분석 |
++------------+------------+----------------------+------------------+-------------------+
+|            | **연속형** | (X가 이분형)         | **선형회귀분석** | 일반화 선형 모델  |
+|            |            |                      |                  |                   |
+|            |            | independent t-test   |                  |                   |
+|            |            |                      |                  |                   |
+|            |            | (X가 3개 이상) ANOVA |                  |                   |
++------------+------------+----------------------+------------------+-------------------+
+
+::: footer
+안준호 교수님의 2023 동계 SAS 워크샵 내용을 참고했습니다.
+:::
+
+## 예제 4 {.smaller .scrollable}
+
+-   간접 흡연이 뇌졸중에 미치는 영향을 조사하기 위해 비흡연 뇌졸중 환자를 환자군으로 환자군과 연령, 직업을 매칭한 대조군으로 환자-대조군 연구를 수행하고자 한다. 간접 흡연 노출 변수는 동거 가족 중에 흡연자가 있는지를 여부로 조사하였다.
+-   동거 가족 흡연자 유무와 뇌졸중 발병에 상관관계가 있는가?
+
+::: footer
+[Need more?](https://online.stat.psu.edu/stat100/lesson/10/10.1)
+:::
+
+## 예제 4 {.smaller .scrollable}
+
+-   간접 흡연이 뇌졸중에 미치는 영향을 조사하기 위해 비흡연 뇌졸중 환자를 환자군으로 환자군과 연령, 직업을 매칭한 대조군으로 환자-대조군 연구를 수행하고자 한다. 간접 흡연 노출 변수는 동거 가족 중에 흡연자가 있는지를 여부로 조사하였다.
+-   동거 가족 흡연자 유무와 뇌졸중 발병에 상관관계가 있는가?
+    -   X: 동거 가족 흡연자 유무(범주형)
+    -   Y: 뇌졸중 유무(범주형)
+
++------------+------------+---------------------------------+--------------+-----------------------+
+|            |            | X 변수                          |              |                       |
++============+============+=================================+==============+=======================+
+|            |            | **범주형**                      | 연속형       | X 변수 관계없이       |
++------------+------------+---------------------------------+--------------+-----------------------+
+| **Y 변수** | **범주형** | **카이제곱 검정**               |              | **로지스틱 회귀분석** |
++------------+------------+---------------------------------+--------------+-----------------------+
+|            | 연속형     | (X가 이분형) independent t-test | 선형회귀분석 | 일반화 선형 모델      |
+|            |            |                                 |              |                       |
+|            |            | (X가 3개 이상) ANOVA            |              |                       |
++------------+------------+---------------------------------+--------------+-----------------------+
+
+::: footer
+[Need more?](https://online.stat.psu.edu/stat100/lesson/10/10.1)
+:::
+
+# 추론 통계 - 기타
+
+-   paired t-test
+-   생존분석
+
+## paired t-test - 자료 준비
+
+-   짝지어진 경우의 t-test
+
+```{r eval = TRUE}
+data_paired <- rio::import(here('data','paired t test.xlsx'))
+data_paired
+```
+
+## paired t-test - 자료 그림 {.smaller .scrollable}
+
+```{r eval = TRUE}
+## ggplot 그림 그릴 때는 long form 쓰세요
+data_paired_long <- data_paired %>% 
+  pivot_longer(cols = 2:3,
+               names_to = 'test_point', values_to = 'value')
+
+data_paired_long$test_point <- factor(data_paired_long$test_point, levels=c('before','after'))
+
+data_paired_long %>% 
+  ggplot(aes(x=test_point, y=value, group=test_point)) + 
+  geom_point() +
+  geom_boxplot() +
+  geom_line(aes(group=Subject)) +
+  theme_bw()
+```
+
+## paired t-test - 검정 {.smaller .scrollable}
+
+-   짝 지은 자료 테스트
+    -   **paired=T 옵션으로 검정**
+    -   변수의 차이를 계산한 변수를 만들어 이 변수의 평균이 0인지 확인
+
+```{r eval= TRUE}
+# 정규성
+data_paired$before %>% shapiro.test()
+data_paired$after %>% shapiro.test()
+
+t.test(data_paired$before, data_paired$after, paired = T)
+
+```
+
+## paired t-test - 검정 {.smaller .scrollable}
+
+-   짝 지은 자료 테스트
+    -   paired=T 옵션으로 검정
+    -   **변수의 차이를 계산한 변수를 만들어 이 변수의 평균이 0인지 확인**
+
+```{r eval = TRUE}
+## 차이를 가지고 검정
+t.test(data_paired$Difference, mu=0)
+
+## 비모수
+wilcox.test(data_paired$before, data_paired$after, paired = T)
+```
+
+## 생존분석 외 기타 {.smaller}
+
+::: columns
+::: column
+-   생존분석
+    -   성빈센트 병원 문건웅 교수님 패키지를 써보자
+    -   [autoReg](https://cardiomoon.github.io/autoReg/articles/Survival.html)
+-   일반화 가법 모형
+    -   [문건웅 교수님 자료](https://bookdown.org/cardiomoon/gam/)
+:::
+
+::: column
+![](images/cardiomoon_r_book.jpg)
+:::
+:::
+
+# 끝
+
+-   Learn more R and have fun!
+-   감사합니다.
+
+::: footer
+이메일 : jae0young.park\@gmail.com
+:::
